@@ -11,6 +11,7 @@ import json
 from langchain.retrievers import ParentDocumentRetriever
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import CharacterTextSplitter
+from langchain_community.document_transformers import LongContextReorder
 
 import base64
 from PIL import Image
@@ -150,7 +151,8 @@ if __name__ == "__main__":
     full_text_fpath = '../data/1200/doc/s7-1200文档.txt'
     embed_model_path = '../model_pool/bge-m3'
 
-    question = "如何在step 7 basic中创建一个项目?"
+    # question = "如何在step 7 basic中创建一个项目?"
+    question = "s7-1200是什么？"
 
     retriever_multiModal = build_multiModal_retriever(text_fpath,
                                                       img_fpath,
@@ -166,6 +168,7 @@ if __name__ == "__main__":
 
     res_multiModal = retriever_multiModal.invoke(question)
     res_with_score = retriever_multiModal.vectorstore.similarity_search_with_score(question)
+    reorder_res_with_score = LongContextReorder().transform_documents(res_with_score)
 
     print(res_multiModal[0])
     print('==========')
@@ -173,6 +176,9 @@ if __name__ == "__main__":
     print('==========')
     print(res_with_score[0][1])
     print('===========')
+    print(reorder_res_with_score)
+
+
 
     # 兩個檢索的結果一致，可返回score。
 

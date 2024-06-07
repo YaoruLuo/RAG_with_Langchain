@@ -72,6 +72,7 @@ def convert_image_from_base64(base64_str):
 
     return image
 
+
 if __name__ == "__main__":
     # context path
     text_fpath = './data/1200/doc/500token'
@@ -143,29 +144,35 @@ if __name__ == "__main__":
         gc.collect()
 
         # multimodal rag
-        res_multiModal = retriever_multiModal.invoke(question_trans)
-        res_multiModal_reorder = LongContextReorder().transform_documents(res_multiModal)
-        res_multiModal_img_text_dict = split_image_text_types(res_multiModal_reorder)
-        res_multiModal_most_related_type = res_multiModal_img_text_dict["most_related_type"]
+        res_multiModal_with_score = retriever_multiModal.vectorstore.similarity_search_with_score(question_trans)
+        res_multiModal_score = res_multiModal_with_score[0][1]
+        res_multiModal_most_related_type = None
         res_multiModal_rag_text = None
         res_multiModal_rag_image = None
-        print("multiModal rag doc:", res_multiModal_img_text_dict['texts'])
 
-        if res_multiModal_most_related_type == "image":
-            # Load cpm
-            cpm = get_cpm(cpm_path, cpm_max_memory_map)
-            # cpm
-            res_multiModal_img_base64 = res_multiModal_img_text_dict['images'][0]
-            res_multiModal_rag_image = convert_image_from_base64(res_multiModal_img_base64)
-            with torch.no_grad():
-                res_multiModal_rag_text = cpm.chat(res_multiModal_rag_image, question_trans)
-            print("RAG texts from image:", res_multiModal_rag_text)
-            del cpm
-            torch.cuda.empty_cache()
+        if res_multiModal_score < 0.6:
+            res_multiModal = retriever_multiModal.invoke(question_trans)
+            res_multiModal_reorder = LongContextReorder().transform_documents(res_multiModal)
 
-        elif res_multiModal_most_related_type == "text":
-            res_multiModal_rag_text = res_multiModal_img_text_dict['texts'][0]
-            print("RAG texts from documents:", res_multiModal_rag_text)
+            res_multiModal_img_text_dict = split_image_text_types(res_multiModal_reorder)
+            res_multiModal_most_related_type = res_multiModal_img_text_dict["most_related_type"]
+            print("multiModal rag doc:", res_multiModal_img_text_dict['texts'])
+
+            if res_multiModal_most_related_type == "image":
+                # Load cpm
+                cpm = get_cpm(cpm_path, cpm_max_memory_map)
+                # cpm
+                res_multiModal_img_base64 = res_multiModal_img_text_dict['images'][0]
+                res_multiModal_rag_image = convert_image_from_base64(res_multiModal_img_base64)
+                with torch.no_grad():
+                    res_multiModal_rag_text = cpm.chat(res_multiModal_rag_image, question_trans)
+                print("RAG texts from image:", res_multiModal_rag_text)
+                del cpm
+                torch.cuda.empty_cache()
+
+            elif res_multiModal_most_related_type == "text":
+                res_multiModal_rag_text = res_multiModal_img_text_dict['texts'][0]
+                print("RAG texts from documents:", res_multiModal_rag_text)
 
         # parent chunk rag
         res_parentChunk = retriever_parentChunk.invoke(question_trans)

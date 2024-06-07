@@ -13,10 +13,10 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 from langchain_community.document_transformers import LongContextReorder
 
-# from multiModalRag.embedding import build_multiModal_retriever
-# from model_pool.LLM import ChatGLM
-from embedding import build_multiModal_retriever
-from chatApp.model_pool.LLM import ChatGLM
+from multiModalRag.embedding import build_multiModal_retriever
+from model_pool.LLM import ChatGLM
+# from embedding import build_multiModal_retriever
+# from chatApp.model_pool.LLM import ChatGLM
 
 
 def display_image_from_base64(base64_str):
