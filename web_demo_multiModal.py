@@ -17,7 +17,8 @@ from multiModalRag.embedding import build_multiModal_retriever, build_parentChun
 from multiModalRag.rag import split_image_text_types
 import matplotlib.pyplot as plt
 import numpy as np
-from model_pool.LLM import ChatGLM, PROMPT_TEMPLATE, MiniCPM_Llama3_int4
+from model_pool.LLM import ChatGLM, MiniCPM_Llama3_int4
+from model_pool.promptTemplate import PROMPT_TEMPLATE_ZH
 import base64
 from PIL import Image
 from io import BytesIO
@@ -91,7 +92,7 @@ if __name__ == "__main__":
 
     # glm path
     glm_path = "model_pool/chatglm3-6b"
-    glm_max_memory_map = {0: "8GB", 1: "9GB"}
+    glm_max_memory_map = {0: "5GB", 1: "9GB"}
 
     if "history" not in st.session_state:
         st.session_state.history = []
@@ -146,9 +147,9 @@ if __name__ == "__main__":
         # multimodal rag
         res_multiModal_with_score = retriever_multiModal.vectorstore.similarity_search_with_score(question_trans)
         res_multiModal_score = res_multiModal_with_score[0][1]
-        res_multiModal_most_related_type = None
-        res_multiModal_rag_text = None
-        res_multiModal_rag_image = None
+        res_multiModal_most_related_type = ""
+        res_multiModal_rag_text = ""
+        res_multiModal_rag_image = ""
 
         if res_multiModal_score < 0.6:
             res_multiModal = retriever_multiModal.invoke(question_trans)
@@ -182,11 +183,12 @@ if __name__ == "__main__":
             res_parentChunk = res_parentChunk[0].page_content
         print(f"RAG parent chunk: {res_parentChunk}")
 
+        prompt_context = str({"上下文信息": res_parentChunk + '\n' + res_multiModal_rag_text})
+
         # Load glm
         glm = get_chatglm(glm_path, glm_max_memory_map)
-        prompt_text = PROMPT_TEMPLATE["RAG_CHATGLM_TEMPLATE"].format(question=question,
-                                                                     parentChunk=res_parentChunk,
-                                                                     summary=res_multiModal_rag_text)
+        prompt_text = PROMPT_TEMPLATE_ZH["RAG_CHATGLM_TEMPLATE"].format(question=question,
+                                                                        context=prompt_context)
 
         print("GLM Prompt", prompt_text)
 
