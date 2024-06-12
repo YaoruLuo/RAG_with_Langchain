@@ -51,8 +51,8 @@ def categorize_pdf_elements(raw_pdf_elements):
 
 if __name__ == "__main__":
     # File path
-    fpath = "./data/1200/"
-    fname = "s7-1200文档.pdf"
+    fpath = "../data/1500/"
+    fname = "SIMATIC S7-1200-1500编程指南.pdf"
 
     output_image_save_path = fpath + 'figures'
 
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     print("images:", images)
     print("=" * 40)
 
-    # with open(fpath + fname.replace("pdf", "txt"), "w") as f:
-    #     for text in texts:
-    #         f.write(text)
+    with open(fpath + fname.replace("pdf", "txt"), "w") as f:
+        for text in texts:
+            f.write(text)
 

@@ -154,29 +154,29 @@ if __name__ == "__main__":
     # question = "如何在step 7 basic中创建一个项目?"
     question = "s7-1200是什么？"
 
-    retriever_multiModal = build_multiModal_retriever(text_fpath,
-                                                      img_fpath,
-                                                      embed_model_path)
+    # retriever_multiModal = build_multiModal_retriever(text_fpath,
+    #                                                   img_fpath,
+    #                                                   embed_model_path)
 
-    # retriever_parentChunk = build_parentChunk_retriever(full_text_fpath,
-    #                                                     embed_model_path,
-    #                                                     parent_chunkSize=500,
-    #                                                     child_chunkSize=200
-    #                                                     )
+    retriever_parentChunk = build_parentChunk_retriever(full_text_fpath,
+                                                        embed_model_path,
+                                                        parent_chunkSize=500,
+                                                        child_chunkSize=200
+                                                        )
 
-    # res_parentChunk = retriever_parentChunk.invoke(question)
+    res_parentChunk = retriever_parentChunk.invoke(question)
 
-    res_multiModal = retriever_multiModal.invoke(question)
-    res_with_score = retriever_multiModal.vectorstore.similarity_search_with_score(question)
-    reorder_res_with_score = LongContextReorder().transform_documents(res_with_score)
-
-    print(res_multiModal[0])
-    print('==========')
-    print(res_with_score[0][0].page_content)
-    print('==========')
-    print(res_with_score[0][1])
-    print('===========')
-    print(reorder_res_with_score)
+    # res_multiModal = retriever_multiModal.invoke(question)
+    # res_with_score = retriever_multiModal.vectorstore.similarity_search_with_score(question)
+    # reorder_res_with_score = LongContextReorder().transform_documents(res_with_score)
+    #
+    # print(res_multiModal[0])
+    # print('==========')
+    # print(res_with_score[0][0].page_content)
+    # print('==========')
+    # print(res_with_score[0][1])
+    # print('===========')
+    # print(reorder_res_with_score)
 
 
 
