@@ -1,7 +1,12 @@
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
+<<<<<<< HEAD
 #from model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
 from promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
 
+=======
+# from chatApp.model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
+from model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
+>>>>>>> a3e7953fd8605c140cd55a0040bcc79abc6906e9
 import torch
 
 
@@ -179,8 +184,12 @@ if __name__ == "__main__":
 
     # ================================
     # test glm4
+<<<<<<< HEAD
     # gen_kwargs = {"max_length": 2500, "do_sample": True, "top_k": 1}
     gen_kwargs = {"max_length": 2500}
+=======
+    gen_kwargs = {"max_length": 2500, "do_sample": True, "top_k": 1}
+>>>>>>> a3e7953fd8605c140cd55a0040bcc79abc6906e9
     model_dir = "glm-4-9b-chat"
     max_memory_map = {0: "20GB", 1: "20GB", 2: "20GB"}
     model = GLM4(model_dir, max_memory_map)
