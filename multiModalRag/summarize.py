@@ -131,7 +131,6 @@ def runImgSummary(imgPath, modelPath, prompt, imgBase64SavePath, imgURLSumSavePa
     save_to_json(image_path_list, image_summaries_list, save_to_json_path)
 
 
-
 if __name__ == "__main__":
     # Get text summaries
     # text_path = '../data/1500/doc/SIMATIC S7-1200-1500编程指南.txt'
