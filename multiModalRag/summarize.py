@@ -13,7 +13,7 @@ from langchain_text_splitters import CharacterTextSplitter
 os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 
 """
-Generate texts, images, tables summaries.
+Generate texts, images summaries.
 """
 
 # Generate summaries of text elements
@@ -31,7 +31,7 @@ def generate_text_summaries(texts):
     # Initialize empty summaries
     text_summaries = []
 
-    for text in texts[:3]:
+    for text in texts:
         response, _ = model.chat(question=text, history=[], prompt_template=prompt_template)
         print(f"text: {text}\nsummary:{response}")
         text_summaries.append(response)
@@ -44,7 +44,7 @@ def encode_image(image_path):
         return base64.b64encode(image_file.read()).decode("utf-8")
 
 
-def generate_img_summaries(path):
+def generate_img_summaries(imgPath, modelPath, prompt):
     """
     Generate summaries and base64 encoded strings for images
     path: Path to list of .jpg files extracted by Unstructured
@@ -59,16 +59,14 @@ def generate_img_summaries(path):
     # Store image paths
     image_path_list= []
 
-    prompt = """以西门子s7-1200 PLC为背景，详细总结图中的信息。"""
+    model = MiniCPM_Llama3_int4(model_path=modelPath, max_memory_map={0: "10GB"})
 
-    model = MiniCPM_Llama3_int4(model_path="../model_pool/MiniCPM-Llama3-V-2_5-int4")
-
-    msgs = [{'role': 'user', 'content': prompt}]
+    msgs = prompt
 
     # Apply to images
-    for img_file in sorted(os.listdir(path)):
-        if img_file.endswith(".png"):
-            img_path = os.path.join(path, img_file)
+    for img_file in sorted(os.listdir(imgPath)):
+        if img_file.endswith((".jpg", ".png", ".jpeg")):
+            img_path = os.path.join(imgPath, img_file)
             image = Image.open(img_path).convert('RGB')
             image_path_list.append(img_path)
 
@@ -96,37 +94,61 @@ def save_to_json(image_urls, summary, filename):
 
     return json_data
 
-
-if __name__ == "__main__":
-    # Get text, table summaries
-    text_path = '../data/1200/doc/s7-1200文档.txt'
-    with open(text_path, "r") as f:
+def runTextSummary(textPath, chunkSize, savePath):
+    with open(textPath, "r") as f:
         texts = f.read()
 
     text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
-        chunk_size=250, chunk_overlap=25
+        chunk_size=chunkSize, chunk_overlap=chunkSize*0.1
     )
+
     texts_token = text_splitter.split_text(texts)
     print("texts_token:", texts_token)
 
-    with open('../data/1200/doc/250token/text.pkl', 'wb') as f:
-        pickle.dump(texts_token, f)
-
     text_summaries = generate_text_summaries(texts_token)
 
-    with open('../data/1200/doc/250token/summary.pkl', 'wb') as f:
+    tokenSavePath = os.path.join(savePath, 'text.pkl')
+    summarySavePath = os.path.join(savePath, 'summary.pkl')
+
+    with open(tokenSavePath, 'wb') as f:
+        pickle.dump(texts_token, f)
+
+    with open(summarySavePath, 'wb') as f:
         pickle.dump(text_summaries, f)
 
+def runImgSummary(imgPath, modelPath, prompt, imgBase64SavePath, imgURLSumSavePath):
+    img_base64_list, image_summaries_list, image_path_list = generate_img_summaries(imgPath,
+                                                                                    modelPath,
+                                                                                    prompt)
+
+    # save img_base64_list
+    save_to_pkl_path = imgBase64SavePath
+    with open(save_to_pkl_path, 'wb') as f:
+        pickle.dump(img_base64_list, f)
+
+    # save image_path_list, image_summaries_list
+    save_to_json_path = imgURLSumSavePath
+    save_to_json(image_path_list, image_summaries_list, save_to_json_path)
+
+
+if __name__ == "__main__":
+    # Get text summaries
+    # text_path = '../data/1500/doc/SIMATIC S7-1200-1500编程指南.txt'
+    # chunk_size = 1000
+    # save_path = '../data/1500/doc/1000token'
+    #
+    # runTextSummary(text_path, chunk_size, save_path)
+
     # ==============================
-    # # Get image summaries
-    # img_path = "../data/1200/figures_manual"
-    # img_base64_list, image_summaries_list, image_path_list = generate_img_summaries(img_path)
-    #
-    # # save img_base64_list
-    # save_to_pke_path = '../data/1200/img_base64_list.pkl'
-    # with open(save_to_pke_path, 'wb') as f:
-    #     pickle.dump(img_base64_list, f)
-    #
-    # # save image_path_list, image_summaries_list
-    # save_to_json_path = "../data/1200/path_summaries_list.json"
-    # res = save_to_json(image_path_list, image_summaries_list, save_to_json_path)
+    # Get image summaries
+    img_path = "../data/1500/figures"
+    model_path = "../model_pool/MiniCPM-Llama3-V-2_5-int4"
+    img_summary_prompt = """以西门子PLC为背景，详细总结图中的信息。"""
+    img_base64_save_path = '../data/1500/img_base64_list.pkl'
+    img_URL_sum_save_path = "../data/1500/path_summaries_list.json"
+
+    runImgSummary(img_path,
+                  model_path,
+                  img_summary_prompt,
+                  img_base64_save_path,
+                  img_URL_sum_save_path)
