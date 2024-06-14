@@ -20,8 +20,9 @@ class ChatGLM4_LLM(LLM):
             mode_name_or_path,
             torch_dtype=torch.bfloat16,
             trust_remote_code=True,
-            device_map="auto"
-        ).eval()
+            device_map="cuda:2",
+            # max_memory = {0:"20GB", 1:"20GB", 2:"20GB"}
+        ).to("cuda").eval()
         print("完成本地模型的加载")
 
         if gen_kwargs is None:
@@ -35,6 +36,7 @@ class ChatGLM4_LLM(LLM):
         model_inputs = self.tokenizer.apply_chat_template(
             messages, tokenize=True, return_tensors="pt", return_dict=True, add_generation_prompt=True
         )
+        model_inputs = model_inputs.to('cuda')
         generated_ids = self.model.generate(**model_inputs, **self.gen_kwargs)
         generated_ids = [
             output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs['input_ids'], generated_ids)
@@ -58,7 +60,6 @@ class ChatGLM4_LLM(LLM):
 
 if __name__ == "__main__":
 
-    from LLM import ChatGLM4_LLM
-    gen_kwargs = {"max_length": 2500, "do_sample": True, "top_k": 1}
-    llm = ChatGLM4_LLM(mode_name_or_path="/root/autodl-tmp/ZhipuAI/glm-4-9b-chat", gen_kwargs=gen_kwargs)
+    gen_kwargs = {"max_length": 2500}
+    llm = ChatGLM4_LLM(mode_name_or_path="glm-4-9b-chat", gen_kwargs=gen_kwargs)
     print(llm.invoke("你是谁"))
