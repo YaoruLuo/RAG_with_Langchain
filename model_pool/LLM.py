@@ -1,5 +1,9 @@
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
+<<<<<<< HEAD
 from model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
+=======
+from chatApp.model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
+>>>>>>> fcb5baa0a19bb4d502a3dece7e09e10fdf99be96
 import torch
 
 
@@ -142,12 +146,12 @@ class MiniCPM_Llama3_int4(BaseModel):
         return res, history
 
     def chat(self, image, question, context = None):
-        if context == None or context ==[]:
-            prompt = PROMPT_TEMPLATE_ZH["CPM_TEMPLATE"].format(question=question)
-            print("CPM Prompt:",prompt)
-        else:
-            prompt = PROMPT_TEMPLATE_ZH["RAG_CHATGLM_TEMPLATE"].format(question=question, text=context)
-            print("CPM Prompt:",prompt)
+        # if context == None or context ==[]:
+        #     prompt = PROMPT_TEMPLATE_ZH["CPM_TEMPLATE"].format(question=question)
+        #     print("CPM Prompt:",prompt)
+        # else:
+        #     prompt = PROMPT_TEMPLATE_ZH["RAG_CHATGLM_TEMPLATE"].format(question=question, text=context)
+        #     print("CPM Prompt:",prompt)
         msgs = [{'role': 'user', 'content': question}]
         res = self.model.chat(image=image, msgs=msgs, tokenizer=self.tokenizer, sampling=True)
         return res

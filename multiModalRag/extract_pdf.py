@@ -9,7 +9,7 @@ Extract PDF, save figures and txt.
 """
 # Extract elements from PDF
 
-def extract_pdf_elements(path, fname):
+def extract_pdf_elements(path, fname, output_image_save_path):
     """
     Extract images, tables, and chunk text from a PDF file.
     path: File path, which is used to dump images (.jpg)
@@ -46,31 +46,35 @@ def categorize_pdf_elements(raw_pdf_elements):
             texts.append(str(element))
         elif "unstructured.documents.elements.Image" in str(type(element)):
             images.append(str(element))
+
+    return texts, tables, images
+
+def runPDFExtract(fdir, fname, writeText=False):
+    output_image_save_path = os.path.join(fdir, 'figures')
+
+    raw_pdf_elements = extract_pdf_elements(fdir, fname, output_image_save_path)
+    print("raw_pdf_elements:", raw_pdf_elements)
+    print("=" * 40)
+
+    texts, tables, images = categorize_pdf_elements(raw_pdf_elements)
+
+    if writeText:
+        with open(os.path.join(fdir, fname.replace("pdf", "txt")), "w") as f:
+            for text in texts:
+                f.write(text)
+
     return texts, tables, images
 
 
 if __name__ == "__main__":
     # File path
-    fpath = "./data/1200/"
-    fname = "s7-1200文档.pdf"
+    fdir = "../data/1500"
+    fname = "SIMATIC S7-1200-1500编程指南.pdf"
 
-    output_image_save_path = fpath + 'figures'
-
-    # Get elements
-    raw_pdf_elements = extract_pdf_elements(fpath, fname)
-    print("raw_pdf_elements:", raw_pdf_elements)
-    print("=" * 40)
-
-    # Get text, tables
-    texts, tables, images = categorize_pdf_elements(raw_pdf_elements)
+    texts, tables, images = runPDFExtract(fdir, fname, writeText=False)
     print("texts:", texts)
     print("=" * 40)
     print("tables:", tables)
     print("=" * 40)
     print("images:", images)
     print("=" * 40)
-
-    # with open(fpath + fname.replace("pdf", "txt"), "w") as f:
-    #     for text in texts:
-    #         f.write(text)
-
