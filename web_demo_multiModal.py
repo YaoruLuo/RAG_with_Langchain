@@ -88,11 +88,11 @@ if __name__ == "__main__":
 
     # cpm path
     cpm_path = "model_pool/MiniCPM-Llama3-V-2_5-int4"
-    cpm_max_memory_map = {1: "11GB"}
+    cpm_max_memory_map = {1: "40GB"}
 
     # glm path
     glm_path = "model_pool/chatglm3-6b"
-    glm_max_memory_map = {0: "5GB", 1: "9GB"}
+    glm_max_memory_map = {0: "20GB", 1: "20GB", 2: "20GB", 3: "20GB"}
 
     if "history" not in st.session_state:
         st.session_state.history = []

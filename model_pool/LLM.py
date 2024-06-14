@@ -1,6 +1,6 @@
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
-from model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
-#from chatApp.model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
+#from model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
+from promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
 
 import torch
 
@@ -25,7 +25,7 @@ class GLM4(BaseModel):
         print("Start loading GLM-4 model...")
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_path, trust_remote_code=True)
         self.model = AutoModelForCausalLM.from_pretrained(self.model_path,
-                                                          torch_dtype=torch.float16,
+                                                          torch_dtype=torch.bfloat16,
                                                           low_cpu_mem_usage=True,
                                                           trust_remote_code=True,
                                                           max_memory=self.max_memory_map,
@@ -54,10 +54,11 @@ class GLM4(BaseModel):
         # elif prompt_template == "SUMMARY_CHATGLM_TEMPLATE" and context == None:
         #     prompt = PROMPT_TEMPLATE_ZH[prompt_template].format(text=question)
         #     print("SUMMARY_CHATGLM_TEMPLATE: ", prompt)
-
-        response = self.model.generate(**inputs, **gen_kwargs)
-        response = response[:, inputs['input_ids'].shape[1]:]
-        print(self.tokenizer.decode(response[0], skip_special_tokens=True))
+        
+        with torch.no_grad():
+            response = self.model.generate(**inputs, **gen_kwargs)
+            response = response[:, inputs['input_ids'].shape[1]:]
+            print(self.tokenizer.decode(response[0], skip_special_tokens=True))
 
         return response
 
@@ -178,10 +179,10 @@ if __name__ == "__main__":
 
     # ================================
     # test glm4
-    gen_kwargs = {"max_length": 2500, "do_sample": True, "top_k": 1}
-
+    # gen_kwargs = {"max_length": 2500, "do_sample": True, "top_k": 1}
+    gen_kwargs = {"max_length": 2500}
     model_dir = "glm-4-9b-chat"
-    max_memory_map = {0: "10GB", 1: "10GB"}
+    max_memory_map = {0: "20GB", 1: "20GB", 2: "20GB"}
     model = GLM4(model_dir, max_memory_map)
     question = "自我介绍。"
     output = model.chat(question, gen_kwargs)
