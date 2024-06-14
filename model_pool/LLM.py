@@ -1,5 +1,6 @@
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
-from chatApp.model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
+# from chatApp.model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
+from model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
 import torch
 
 
