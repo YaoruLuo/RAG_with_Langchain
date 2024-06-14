@@ -178,7 +178,6 @@ if __name__ == "__main__":
     # ================================
     # test glm4
     gen_kwargs = {"max_length": 2500, "do_sample": True, "top_k": 1}
-
     model_dir = "glm-4-9b-chat"
     max_memory_map = {0: "10GB", 1: "10GB"}
     model = GLM4(model_dir, max_memory_map)
