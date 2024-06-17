@@ -1,12 +1,7 @@
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
-<<<<<<< HEAD
-#from model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
+# from model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
 from promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
 
-=======
-# from chatApp.model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
-from model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
->>>>>>> a3e7953fd8605c140cd55a0040bcc79abc6906e9
 import torch
 
 
@@ -20,10 +15,10 @@ class BaseModel:
 
 
 class GLM4(BaseModel):
-    def __init__(self, model_path, max_memory_map = {0: "11GB", 1: "11GB"}):
+    def __init__(self, model_path, device):
         super().__init__()
         self.model_path = model_path
-        self.max_memory_map = max_memory_map
+        self.device = device
         self.load_model()
 
     def load_model(self):
@@ -32,14 +27,12 @@ class GLM4(BaseModel):
         self.model = AutoModelForCausalLM.from_pretrained(self.model_path,
                                                           torch_dtype=torch.bfloat16,
                                                           low_cpu_mem_usage=True,
-                                                          trust_remote_code=True,
-                                                          max_memory=self.max_memory_map,
-                                                          device_map='auto')
-        self.model.eval()
+                                                          trust_remote_code=True
+                                                          )
+        self.model.to(self.device).eval()
         print("Finish model building!")
 
     def chat(self, question, gen_kwargs):
-        device = "cuda"
 
         inputs = self.tokenizer.apply_chat_template([{"role": "user", "content": question}],
                                                add_generation_prompt=True,
@@ -48,7 +41,7 @@ class GLM4(BaseModel):
                                                return_dict=True
                                                )
 
-        inputs = inputs.to(device)
+        inputs = inputs.to(self.device)
 
         # if prompt_template == "CHATGLM_TEMPLATE" and context == None:
         #     prompt = PROMPT_TEMPLATE_ZH[prompt_template].format(question=question)
@@ -63,7 +56,7 @@ class GLM4(BaseModel):
         with torch.no_grad():
             response = self.model.generate(**inputs, **gen_kwargs)
             response = response[:, inputs['input_ids'].shape[1]:]
-            print(self.tokenizer.decode(response[0], skip_special_tokens=True))
+            response = self.tokenizer.decode(response[0], skip_special_tokens=True)
 
         return response
 
@@ -184,16 +177,13 @@ if __name__ == "__main__":
 
     # ================================
     # test glm4
-<<<<<<< HEAD
-    # gen_kwargs = {"max_length": 2500, "do_sample": True, "top_k": 1}
     gen_kwargs = {"max_length": 2500}
-=======
-    gen_kwargs = {"max_length": 2500, "do_sample": True, "top_k": 1}
->>>>>>> a3e7953fd8605c140cd55a0040bcc79abc6906e9
+
     model_dir = "glm-4-9b-chat"
-    max_memory_map = {0: "20GB", 1: "20GB", 2: "20GB"}
-    model = GLM4(model_dir, max_memory_map)
+    device = "cuda:0"
+    model = GLM4(model_dir, device)
     question = "自我介绍。"
+
     output = model.chat(question, gen_kwargs)
     print("output:",output)
 
