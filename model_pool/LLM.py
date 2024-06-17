@@ -42,6 +42,7 @@ class GLM4(BaseModel):
                                                )
 
         inputs = inputs.to(self.device)
+        print("input:", inputs)
 
         # if prompt_template == "CHATGLM_TEMPLATE" and context == None:
         #     prompt = PROMPT_TEMPLATE_ZH[prompt_template].format(question=question)
@@ -185,5 +186,5 @@ if __name__ == "__main__":
     question = "自我介绍。"
 
     output = model.chat(question, gen_kwargs)
-    print("output:",output)
+    print(f"User: {question} \nAI: {output}")
 
