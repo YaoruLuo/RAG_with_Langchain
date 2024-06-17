@@ -198,6 +198,7 @@ class ChatGLM4Tokenizer(PreTrainedTokenizer):
                         input_ids.extend(input)
                     else:
                         input_message += input
+
             if add_generation_prompt:
                 if tokenize:
                     input_ids.extend([self.convert_tokens_to_ids("<|assistant|>")])

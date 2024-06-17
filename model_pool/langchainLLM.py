@@ -2,6 +2,7 @@ from langchain.llms.base import LLM
 from typing import Any, List, Optional, Dict
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from transformers import AutoTokenizer, AutoModelForCausalLM
+from promptTemplate import PROMPT_TEMPLATE_ZH, PROMPT_TEMPLATE_ZH_LC
 import torch
 
 class ChatGLM4_LLM(LLM):
@@ -9,8 +10,9 @@ class ChatGLM4_LLM(LLM):
     tokenizer: AutoTokenizer = None
     model: AutoModelForCausalLM = None
     gen_kwargs: dict = None
+    prompt_template: str = None
 
-    def __init__(self, mode_name_or_path: str, gpu_device, gen_kwargs: dict = None):
+    def __init__(self, mode_name_or_path: str, gpu_device, prompt_template, gen_kwargs: dict = None):
         super().__init__()
         print("正在从本地加载模型...")
         self.tokenizer = AutoTokenizer.from_pretrained(
@@ -24,12 +26,24 @@ class ChatGLM4_LLM(LLM):
         ).to("cuda").eval()
         print("完成本地模型的加载")
 
+        self.prompt_template = prompt_template
         self.gen_kwargs = gen_kwargs
 
     def _call(self, prompt: str, stop: Optional[List[str]] = None,
               run_manager: Optional[CallbackManagerForLLMRun] = None,
               **kwargs: Any) -> str:
-        messages = [{"role": "user", "content": prompt}]
+
+        system_prompt = None
+        if self.prompt_template == "CHATGLM_TEMPLATE":
+            system_prompt = PROMPT_TEMPLATE_ZH_LC[self.prompt_template]
+
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": prompt}
+        ]
+
+        print(f"message: {messages}")
+
         model_inputs = self.tokenizer.apply_chat_template(
             messages,
             tokenize=True,
@@ -65,6 +79,10 @@ if __name__ == "__main__":
     gen_kwargs = {"max_length": 2500}
     model_dir = "glm-4-9b-chat"
     gpu_device = "cuda:2"
+    prompt_template = "CHATGLM_TEMPLATE"
 
-    llm = ChatGLM4_LLM(mode_name_or_path=model_dir,gpu_device=gpu_device, gen_kwargs=gen_kwargs)
+    llm = ChatGLM4_LLM(mode_name_or_path=model_dir,
+                       gpu_device=gpu_device,
+                       prompt_template=prompt_template,
+                       gen_kwargs=gen_kwargs)
     print(llm.invoke("介绍你自己"))
