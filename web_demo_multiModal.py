@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     # glm path
     glm_path = "model_pool/chatglm3-6b"
-    glm_max_memory_map = {0: "20GB", 1: "20GB", 2: "20GB", 3: "20GB"}
+    glm_max_memory_map = {0: "6GB", 1: "9GB"}
 
     if "history" not in st.session_state:
         st.session_state.history = []
