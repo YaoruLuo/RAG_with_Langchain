@@ -17,7 +17,7 @@ from multiModalRag.embedding import build_multiModal_retriever, build_parentChun
 from multiModalRag.rag import split_image_text_types
 import matplotlib.pyplot as plt
 import numpy as np
-from model_pool.langchainLLM import ChatGLM4_LLM
+from model_pool.langchainLLM import ChatGLM4_LLM, build_chat_history
 from model_pool.LLM import MiniCPM_Llama3_int4, ChatGLM
 from model_pool.promptTemplate import PROMPT_TEMPLATE_ZH
 import base64
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     # glm4 config
     glm4_path = "model_pool/glm-4-9b-chat"
     gen_kwargs = {"max_length": 2500}
-    gpu_device = "cuda:2"
+    gpu_device = "cuda:1"
     chat_prompt_template = "RAG_CHATGLM_TEMPLATE"
     query_transfer_prompt_template = "QUERY_TRANSFORM_TEMPLATE"
 
@@ -146,16 +146,13 @@ if __name__ == "__main__":
         history = st.session_state.history
         past_key_values = st.session_state.past_key_values
 
-        # Load glm
-
+        # Load glm4
         glm = get_glm4(glm4_path, gpu_device, gen_kwargs)
+
+        # query transfer
         with torch.no_grad():
-            question_trans = glm.invoke(question, history)
+            question_trans = glm.query_transfer(question, history)
         print("transfer question: ", question_trans)
-        del glm
-        torch.cuda.empty_cache()
-        torch.cuda.synchronize()
-        gc.collect()
 
         # multimodal rag
         res_multiModal_with_score = retriever_multiModal.vectorstore.similarity_search_with_score(question_trans)
@@ -197,26 +194,31 @@ if __name__ == "__main__":
         print(f"RAG parent chunk: {res_parentChunk}")
 
         prompt_context = str({"上下文信息": res_parentChunk + '\n' + res_multiModal_rag_text})
+        print("RAG resutls", prompt_context)
 
-        # Load glm
-        glm = get_chatglm(glm_path, glm_max_memory_map)
-        prompt_text = PROMPT_TEMPLATE_ZH["RAG_CHATGLM_TEMPLATE"].format(question=question,
-                                                                        context=prompt_context)
+        # Chat with glm
 
-        print("GLM Prompt", prompt_text)
+        # stream output
+        # for response, history, past_key_values in glm.model.stream_chat(
+        #         glm.tokenizer,
+        #         question,
+        #         prompt_text,
+        #         history,
+        #         past_key_values=past_key_values,
+        #         max_length=max_length,
+        #         top_p=top_p,
+        #         temperature=temperature,
+        #         return_past_key_values=True,
+        # ):
+        #
+        #     message_placeholder.markdown(response)
 
-        for response, history, past_key_values in glm.model.stream_chat(
-                glm.tokenizer,
-                question,
-                prompt_text,
-                history,
-                past_key_values=past_key_values,
-                max_length=max_length,
-                top_p=top_p,
-                temperature=temperature,
-                return_past_key_values=True,
-        ):
-            message_placeholder.markdown(response)
+        response = glm.invoke(question,
+                              chat_history=history,
+                              context=prompt_context,
+                              prompt_template="RAG_CHATGLM_TEMPLATE")
+
+        history = build_chat_history(history, question, response)
 
         if res_multiModal_most_related_type == "image":
             st.image(res_multiModal_rag_image, caption='图片来自西门子《S7-1200 入门指南》')
