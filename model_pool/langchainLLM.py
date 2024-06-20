@@ -2,7 +2,8 @@ from langchain.llms.base import LLM
 from typing import Any, List, Optional, Dict
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from promptTemplate import PROMPT_TEMPLATE_ZH, PROMPT_TEMPLATE_ZH_LC
+# from promptTemplate import PROMPT_TEMPLATE_ZH, PROMPT_TEMPLATE_ZH_LC
+from model_pool.promptTemplate import PROMPT_TEMPLATE_ZH, PROMPT_TEMPLATE_ZH_LC
 import torch
 
 class ChatGLM4_LLM(LLM):
@@ -13,7 +14,7 @@ class ChatGLM4_LLM(LLM):
 
     def __init__(self, mode_name_or_path: str, gpu_device, gen_kwargs: dict = None):
         super().__init__()
-        print("正在从本地加载模型...")
+        print("Loading GLM4...")
         self.tokenizer = AutoTokenizer.from_pretrained(
             mode_name_or_path, trust_remote_code=True
         )
@@ -23,7 +24,7 @@ class ChatGLM4_LLM(LLM):
             trust_remote_code=True,
             device_map=gpu_device,
         ).to("cuda").eval()
-        print("完成本地模型的加载")
+        print("Finish loading GLM4!")
 
         self.gen_kwargs = gen_kwargs
 
@@ -50,7 +51,7 @@ class ChatGLM4_LLM(LLM):
                 {"role": "user", "content": prompt},
             ]
 
-            print(f"model input: {messages}")
+            print(f"====input for chat model====: {messages} \n")
 
             model_inputs = self.tokenizer.apply_chat_template(
                 messages,
@@ -73,7 +74,7 @@ class ChatGLM4_LLM(LLM):
             chat_history.append({"role": "user", "content": prompt})
             messages = chat_history
 
-            print(f"model input: {messages}")
+            print(f"====input for chat model====: {messages} \n")
 
             model_inputs = self.tokenizer.apply_chat_template(
                 messages,
@@ -89,7 +90,8 @@ class ChatGLM4_LLM(LLM):
                 output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs['input_ids'], generated_ids)
             ]
             response = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-            chat_history.pop(-2)
+            chat_history.pop(-1)
+            chat_history.pop(-1)
             return response
 
     @property
@@ -113,16 +115,15 @@ class ChatGLM4_LLM(LLM):
             usr_role, ai_role = latest_usr_histoy["role"], latest_ai_history["role"]
             usr_chat, ai_chat = latest_usr_histoy["content"], latest_ai_history["content"]
             conversation = str({usr_role: usr_chat, ai_role: ai_chat})
-            print(conversation)
         system_prompt = PROMPT_TEMPLATE_ZH_LC["QUERY_TRANSFORM_TEMPLATE"].format(conversation=conversation)
-        print(f"query transfer prompt:{system_prompt}")
+        print(f"====prompt query transfer====:{system_prompt} \n")
 
         messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": question},
         ]
 
-        print(f"model input: {messages}")
+        print(f"====input for query transfer model====: {messages} \n")
 
         model_inputs = self.tokenizer.apply_chat_template(
             messages,
@@ -156,7 +157,6 @@ if __name__ == "__main__":
     gpu_device = "cuda:2"
     # prompt_template = "CHATGLM_TEMPLATE"
     prompt_template = "RAG_CHATGLM_TEMPLATE"
-    prompt_template2 = "QUERY_TRANSFORM_TEMPLATE"
 
     llm = ChatGLM4_LLM(mode_name_or_path=model_dir,
                        gpu_device=gpu_device,

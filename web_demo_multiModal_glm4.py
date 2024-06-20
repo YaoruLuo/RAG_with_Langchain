@@ -40,8 +40,8 @@ st.set_page_config(
 st.title(":green[SIEMENS IOX-AI]")
 
 @st.cache_resource
-def get_glm4(model_path, gpu_device, prompt_template, gen_kwargs):
-    model = ChatGLM4_LLM(model_path, gpu_device, prompt_template, gen_kwargs)
+def get_glm4(model_path, gpu_device, gen_kwargs):
+    model = ChatGLM4_LLM(model_path, gpu_device, gen_kwargs)
     return model
 
 @st.cache_resource
@@ -96,15 +96,17 @@ if __name__ == "__main__":
 
     # cpm config
     cpm_path = "model_pool/MiniCPM-Llama3-V-2_5-int4"
-    cpm_max_memory_map = {1: "40GB"}
+    cpm_max_memory_map = {0: "20GB"}
 
     # glm4 config
     glm4_path = "model_pool/glm-4-9b-chat"
     gen_kwargs = {"max_length": 2500}
-    gpu_device = "cuda:1"
+    gpu_device = "cuda:0"
     chat_prompt_template = "RAG_CHATGLM_TEMPLATE"
     query_transfer_prompt_template = "QUERY_TRANSFORM_TEMPLATE"
 
+    # Load glm4
+    glm = get_glm4(glm4_path, gpu_device, gen_kwargs)
 
     if "history" not in st.session_state:
         st.session_state.history = []
@@ -146,13 +148,9 @@ if __name__ == "__main__":
         history = st.session_state.history
         past_key_values = st.session_state.past_key_values
 
-        # Load glm4
-        glm = get_glm4(glm4_path, gpu_device, gen_kwargs)
-
-        # query transfer
-        with torch.no_grad():
-            question_trans = glm.query_transfer(question, history)
-        print("transfer question: ", question_trans)
+        question_trans = glm.query_transfer(question, history)
+        # question_trans = question
+        print("====transfer question====: ", question_trans)
 
         # multimodal rag
         res_multiModal_with_score = retriever_multiModal.vectorstore.similarity_search_with_score(question_trans)
@@ -167,7 +165,7 @@ if __name__ == "__main__":
 
             res_multiModal_img_text_dict = split_image_text_types(res_multiModal_reorder)
             res_multiModal_most_related_type = res_multiModal_img_text_dict["most_related_type"]
-            print("multiModal rag doc:", res_multiModal_img_text_dict['texts'])
+            print("====multiModal rag doc====:", res_multiModal_img_text_dict['texts'])
 
             if res_multiModal_most_related_type == "image":
                 # Load cpm
@@ -177,13 +175,13 @@ if __name__ == "__main__":
                 res_multiModal_rag_image = convert_image_from_base64(res_multiModal_img_base64)
                 with torch.no_grad():
                     res_multiModal_rag_text = cpm.chat(res_multiModal_rag_image, question_trans)
-                print("RAG texts from image:", res_multiModal_rag_text)
+                print("====RAG texts from image====:", res_multiModal_rag_text)
                 del cpm
                 torch.cuda.empty_cache()
 
             elif res_multiModal_most_related_type == "text":
                 res_multiModal_rag_text = res_multiModal_img_text_dict['texts'][0]
-                print("RAG texts from documents:", res_multiModal_rag_text)
+                print("====RAG texts from documents====:", res_multiModal_rag_text)
 
         # parent chunk rag
         res_parentChunk = retriever_parentChunk.invoke(question_trans)
@@ -191,10 +189,11 @@ if __name__ == "__main__":
             res_parentChunk = ""
         else:
             res_parentChunk = res_parentChunk[0].page_content
-        print(f"RAG parent chunk: {res_parentChunk}")
+        print(f"====RAG text parent chunk====: {res_parentChunk} \n")
 
-        prompt_context = str({"上下文信息": res_parentChunk + '\n' + res_multiModal_rag_text})
-        print("RAG resutls", prompt_context)
+        # prompt_context = str({"上下文信息": res_parentChunk + '\n' + res_multiModal_rag_text})
+        prompt_context = str({"上下文信息": res_parentChunk})
+        print("====RAG final resutls====:", prompt_context)
 
         # Chat with glm
 
@@ -218,6 +217,8 @@ if __name__ == "__main__":
                               context=prompt_context,
                               prompt_template="RAG_CHATGLM_TEMPLATE")
 
+        message_placeholder.markdown(response)
+
         history = build_chat_history(history, question, response)
 
         if res_multiModal_most_related_type == "image":
@@ -230,8 +231,6 @@ if __name__ == "__main__":
         st.session_state.history = history
         st.session_state.past_key_values = past_key_values
 
-        del glm
-        torch.cuda.empty_cache()
 
         # streamlit run web_demo_chatglm.py
 
