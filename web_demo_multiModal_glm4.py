@@ -100,12 +100,12 @@ if __name__ == "__main__":
     # glm4 config
     glm4_path = "model_pool/glm-4-9b-chat"
     gen_kwargs = {"max_length": 2500}
-    glm_gpu_device = "cuda:0"
+    glm4_gpu_device = "cuda:0"
     chat_prompt_template = "RAG_CHATGLM_TEMPLATE"
     query_transfer_prompt_template = "QUERY_TRANSFORM_TEMPLATE"
 
     # Load glm4
-    glm = get_glm4(glm4_path, glm_gpu_device, gen_kwargs)
+    glm = get_glm4(glm4_path, glm4_gpu_device, gen_kwargs)
 
     if "history" not in st.session_state:
         st.session_state.history = []
@@ -154,7 +154,7 @@ if __name__ == "__main__":
         # multimodal rag
         res_multiModal_with_score = retriever_multiModal.vectorstore.similarity_search_with_score(question_trans)
         res_multiModal_score = res_multiModal_with_score[0][1]
-        res_multiModal_most_related_type = ""
+        # res_multiModal_most_related_type = ""
         res_multiModal_rag_text = ""
 
         if res_multiModal_score < 0.6:
@@ -186,8 +186,7 @@ if __name__ == "__main__":
             res_parentChunk = res_parentChunk[0].page_content
         print(f"====RAG text parent chunk====: {res_parentChunk} \n")
 
-        # prompt_context = str({"上下文信息": res_parentChunk + '\n' + res_multiModal_rag_text})
-        prompt_context = str({"上下文信息": res_parentChunk})
+        prompt_context = str({"上下文信息": res_parentChunk + '\n' + res_multiModal_rag_text})
         print("====RAG final resutls====:", prompt_context)
 
         # Chat with glm

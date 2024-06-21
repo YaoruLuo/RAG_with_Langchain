@@ -12,14 +12,14 @@ class ChatGLM4_LLM(LLM):
     model: AutoModelForCausalLM = None
     gen_kwargs: dict = None
 
-    def __init__(self, mode_name_or_path: str, gpu_device, gen_kwargs: dict = None):
+    def __init__(self, mode_path: str, gpu_device, gen_kwargs: dict = None):
         super().__init__()
         print("Loading GLM4...")
         self.tokenizer = AutoTokenizer.from_pretrained(
-            mode_name_or_path, trust_remote_code=True
+            mode_path, trust_remote_code=True
         )
         self.model = AutoModelForCausalLM.from_pretrained(
-            mode_name_or_path,
+            mode_path,
             torch_dtype=torch.bfloat16,
             trust_remote_code=True,
             device_map=gpu_device,
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     # prompt_template = "CHATGLM_TEMPLATE"
     prompt_template = "RAG_CHATGLM_TEMPLATE"
 
-    llm = ChatGLM4_LLM(mode_name_or_path=model_dir,
+    llm = ChatGLM4_LLM(mode_path=model_dir,
                        gpu_device=gpu_device,
                        gen_kwargs=gen_kwargs)
 
