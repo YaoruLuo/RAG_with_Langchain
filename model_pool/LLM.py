@@ -1,18 +1,16 @@
-from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM, AutoConfig
 from model_pool.promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
 # from promptTemplate import PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_ZH
+from PIL import Image
+from accelerate import init_empty_weights, infer_auto_device_map, load_checkpoint_in_model, dispatch_model
 
 import torch
 
-
 class BaseModel:
-
     def chat(self, prompt, history, content):
         pass
-
     def load_model(self):
         pass
-
 
 class GLM4(BaseModel):
     def __init__(self, model_path, device):
@@ -43,16 +41,6 @@ class GLM4(BaseModel):
 
         inputs = inputs.to(self.device)
         print("input:", inputs)
-
-        # if prompt_template == "CHATGLM_TEMPLATE" and context == None:
-        #     prompt = PROMPT_TEMPLATE_ZH[prompt_template].format(question=question)
-        #     print("CHATGLM_TEMPLATE: ", prompt)
-        # elif prompt_template == "RAG_CHATGLM_TEMPLATE" and context is not None:
-        #     prompt = PROMPT_TEMPLATE_ZH[prompt_template].format(question=question, text=context)
-        #     print("RAG_CHATGLM_TEMPLATE: ", prompt)
-        # elif prompt_template == "SUMMARY_CHATGLM_TEMPLATE" and context == None:
-        #     prompt = PROMPT_TEMPLATE_ZH[prompt_template].format(text=question)
-        #     print("SUMMARY_CHATGLM_TEMPLATE: ", prompt)
         
         with torch.no_grad():
             response = self.model.generate(**inputs, **gen_kwargs)
@@ -144,14 +132,50 @@ class MiniCPM_Llama3_int4(BaseModel):
         return res, history
 
     def chat(self, image, question, context = None):
-        # if context == None or context ==[]:
-        #     prompt = PROMPT_TEMPLATE_ZH["CPM_TEMPLATE"].format(question=question)
-        #     print("CPM Prompt:",prompt)
-        # else:
-        #     prompt = PROMPT_TEMPLATE_ZH["RAG_CHATGLM_TEMPLATE"].format(question=question, text=context)
-        #     print("CPM Prompt:",prompt)
         msgs = [{'role': 'user', 'content': question}]
         res = self.model.chat(image=image, msgs=msgs, tokenizer=self.tokenizer, sampling=True)
+        return res
+
+class MiniCPM_Llama3(BaseModel):
+    def __init__(self, model_path, max_memory_map):
+        self.model_path = model_path
+        self.max_memory_map = max_memory_map
+        self.load_model()
+
+    def load_model(self):
+        print("Start loading MiniCPM_Llama3 model on multipy GPUs...")
+        self.config = AutoConfig.from_pretrained(self.model_path,trust_remote_code=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_path, trust_remote_code=True)
+        with init_empty_weights():
+            self.model = AutoModel.from_config(
+                self.config,
+                torch_dtype=torch.float16,
+                trust_remote_code=True
+            )
+        self.device_map = infer_auto_device_map(
+            self.model,
+            max_memory=self.max_memory_map,
+            no_split_module_classes=["LlamaDecoderLayer"]
+        )
+
+        load_checkpoint_in_model(
+            self.model,
+            self.model_path,
+            device_map=self.device_map
+        )
+
+        self.model = dispatch_model(
+            self.model,
+            device_map=self.device_map
+        )
+
+        torch.set_grad_enabled(False)
+        self.model.eval()
+        print("Finish model building!")
+
+    def chat(self, image, question):
+        msgs = [{'role': 'user', 'content': question}]
+        res = self.model.chat(image=image, msgs=msgs, tokenizer=self.tokenizer)
         return res
 
 
@@ -178,13 +202,27 @@ if __name__ == "__main__":
 
     # ================================
     # test glm4
-    gen_kwargs = {"max_length": 2500}
+    # gen_kwargs = {"max_length": 2500}
+    #
+    # model_dir = "glm-4-9b-chat"
+    # device = "cuda:0"
+    # model = GLM4(model_dir, device)
+    # question = "自我介绍。"
+    #
+    # output = model.chat(question, gen_kwargs)
+    # print(f"User: {question} \nAI: {output}")
 
-    model_dir = "glm-4-9b-chat"
-    device = "cuda:0"
-    model = GLM4(model_dir, device)
+
+    # ================================
+    # test minicpm
+    model_dir = "MiniCPM-Llama3-V-2_5"
+    device_id = 1
+    max_memory_map = {device_id:"20GiB"}
+    img_path = "../data/1200/figures/figure-36-100.jpg"
+    model = MiniCPM_Llama3(model_dir, max_memory_map)
+
     question = "自我介绍。"
-
-    output = model.chat(question, gen_kwargs)
+    img = Image.open(img_path).convert('RGB')
+    output = model.chat(img, question)
     print(f"User: {question} \nAI: {output}")
 

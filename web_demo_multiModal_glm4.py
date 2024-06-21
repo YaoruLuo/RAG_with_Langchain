@@ -18,8 +18,7 @@ from multiModalRag.rag import split_image_text_types
 import matplotlib.pyplot as plt
 import numpy as np
 from model_pool.langchainLLM import ChatGLM4_LLM, build_chat_history
-from model_pool.LLM import MiniCPM_Llama3_int4, ChatGLM
-from model_pool.promptTemplate import PROMPT_TEMPLATE_ZH
+from model_pool.LLM import MiniCPM_Llama3_int4, ChatGLM, MiniCPM_Llama3
 import base64
 from PIL import Image
 from io import BytesIO
@@ -51,7 +50,7 @@ def get_glm3(model_path, max_memory_map):
 
 @st.cache_resource
 def get_cpm(model_path, max_memory_map):
-    model = MiniCPM_Llama3_int4(model_path, max_memory_map)
+    model = MiniCPM_Llama3(model_path, max_memory_map)
     return model
 
 @st.cache_resource
@@ -73,14 +72,10 @@ def get_parentChunk_retriever(full_text_fpath,
 
 
 def convert_image_from_base64(base64_str):
-    # 解码Base64字符串为二进制数据
+    # base64 to bytes
     image_data = base64.b64decode(base64_str)
-
-    # 使用PIL.Image从二进制数据创建图像对象
     image = Image.open(BytesIO(image_data)).convert("RGB")
-
     return image
-
 
 if __name__ == "__main__":
     # context path
@@ -95,18 +90,22 @@ if __name__ == "__main__":
                                                       embed_model_path)
 
     # cpm config
-    cpm_path = "model_pool/MiniCPM-Llama3-V-2_5-int4"
-    cpm_max_memory_map = {0: "20GB"}
+    cpm_path = "model_pool/MiniCPM-Llama3-V-2_5"
+    cpm_gpu_device = 1
+    max_memory_map = {cpm_gpu_device: "20GiB"}
+
+    # Load cpm
+    cpm = get_cpm(cpm_path, max_memory_map)
 
     # glm4 config
     glm4_path = "model_pool/glm-4-9b-chat"
     gen_kwargs = {"max_length": 2500}
-    gpu_device = "cuda:0"
+    glm_gpu_device = "cuda:0"
     chat_prompt_template = "RAG_CHATGLM_TEMPLATE"
     query_transfer_prompt_template = "QUERY_TRANSFORM_TEMPLATE"
 
     # Load glm4
-    glm = get_glm4(glm4_path, gpu_device, gen_kwargs)
+    glm = get_glm4(glm4_path, glm_gpu_device, gen_kwargs)
 
     if "history" not in st.session_state:
         st.session_state.history = []
@@ -148,8 +147,8 @@ if __name__ == "__main__":
         history = st.session_state.history
         past_key_values = st.session_state.past_key_values
 
-        question_trans = glm.query_transfer(question, history)
-        # question_trans = question
+        # question_trans = glm.query_transfer(question, history)
+        question_trans = question
         print("====transfer question====: ", question_trans)
 
         # multimodal rag
@@ -157,7 +156,6 @@ if __name__ == "__main__":
         res_multiModal_score = res_multiModal_with_score[0][1]
         res_multiModal_most_related_type = ""
         res_multiModal_rag_text = ""
-        res_multiModal_rag_image = ""
 
         if res_multiModal_score < 0.6:
             res_multiModal = retriever_multiModal.invoke(question_trans)
@@ -167,17 +165,14 @@ if __name__ == "__main__":
             res_multiModal_most_related_type = res_multiModal_img_text_dict["most_related_type"]
             print("====multiModal rag doc====:", res_multiModal_img_text_dict['texts'])
 
+
             if res_multiModal_most_related_type == "image":
-                # Load cpm
-                cpm = get_cpm(cpm_path, cpm_max_memory_map)
                 # cpm
                 res_multiModal_img_base64 = res_multiModal_img_text_dict['images'][0]
+                # print(res_multiModal_img_base64)
                 res_multiModal_rag_image = convert_image_from_base64(res_multiModal_img_base64)
-                with torch.no_grad():
-                    res_multiModal_rag_text = cpm.chat(res_multiModal_rag_image, question_trans)
+                res_multiModal_rag_text = cpm.chat(res_multiModal_rag_image, question_trans)
                 print("====RAG texts from image====:", res_multiModal_rag_text)
-                del cpm
-                torch.cuda.empty_cache()
 
             elif res_multiModal_most_related_type == "text":
                 res_multiModal_rag_text = res_multiModal_img_text_dict['texts'][0]
@@ -230,7 +225,6 @@ if __name__ == "__main__":
         print("history:", history)
         st.session_state.history = history
         st.session_state.past_key_values = past_key_values
-
 
         # streamlit run web_demo_chatglm.py
 
