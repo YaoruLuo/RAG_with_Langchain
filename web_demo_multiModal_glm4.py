@@ -97,10 +97,8 @@ if __name__ == "__main__":
     cpm = get_cpm(cpm_path, max_memory_map)
 
     # glm4 config
-    max_length = st.sidebar.slider("max_length", 0, 32768, 8192, step=1)
-
     glm4_path = "model_pool/glm-4-9b-chat"
-    gen_kwargs = {"max_length": max_length}
+    gen_kwargs = {"max_length": 2500}
     glm4_gpu_device = "cuda:0"
     chat_prompt_template = "RAG_CHATGLM_TEMPLATE"
     query_transfer_prompt_template = "QUERY_TRANSFORM_TEMPLATE"
