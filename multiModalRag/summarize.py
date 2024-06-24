@@ -145,7 +145,7 @@ if __name__ == "__main__":
     model_path = "../model_pool/MiniCPM-Llama3-V-2_5-int4"
     img_summary_prompt = """以西门子PLC为背景，详细总结图中的信息。"""
     img_base64_save_path = '../data/1500/img_base64_list.pkl'
-    img_URL_sum_save_path = "../data/1500/path_summaries_list.json"
+    img_URL_sum_save_path = "../data/1500/path_summary.json"
 
     runImgSummary(img_path,
                   model_path,

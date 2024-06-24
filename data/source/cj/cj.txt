@@ -1,0 +1,411 @@
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+Clouded Judgement 11.10.23 - OpenAI Updates + Datadog Gives the All-Clear?
+
+JAMIN BALL
+
+NOV 10, 2023
+
+35
+
+2
+
+Every week I’ll provide updates on the latest trends in cloud soware companies. Follow along to
+
+stay up to date!OpenAI Updates
+
+OpenAI had their big developer day this week, and I wanted to call out two key announcements (and trends): increasing context windows and decreasing costs.
+
+When I think about the monetization of AI (and which “layers” monetize rst) I’ve always thought it would follow the below order, with each layer lagging the one that comes before it.
+
+1. Raw silicon (chips like Nvidia bought in large quantities to build out infra to service upcoming demand).
+
+2. Model providers (OpenAI, Anthropic, etc as companies start building out Al).
+
+2. Model providers (OpenAI, Anthropic, etc as companies start building out AI).
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+Share
+
+1/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+3. Hyperscalers (AWS, Azure, GCP as companies look for cloud GPUs who aren’t building out their own data centers)
+
+4. Infra (Data layer, orchestration, monitoring, ops, etc)
+
+5. Durable Applications
+
+We’ve clearly well underway of the rst 3 layers monetizing. Just starting the fourth layer, with the h layer showing up in some pockets, but not really widespread monetization (and I should clarify - scalable monetization). The caveat is important - I’ve heard of a well known company that had an oshore team handling lots of manual customer work (ie responses). And this “product” had a ~50% gross margin. When they started using large language models from OpenAI, the gross margin on the same product went to -100%! (yes, that’s negative 100%). While
+
+the product was “monetizing” I wouldn’t count it as scalable monetization.
+
+We haven’t quite yet cracked AI used in production in widespread fashion. There are many limiters here - data security and compliance are big ones. But even more important right now is cost. At the end of the day, these large language models are quite expensive! And as a vendor using them, you can either pass through the costs to your end customer (to maintain your gross margins), or eat the costs and lower your gross margins (because the customer isn’t willing to pay the incremental cost for incremental functionality brought about by AI), and hope the model providers lower their costs in the future. It seems like every company has been experimenting. Saying things like “just build out all the AI functionality now and then we’ll evaluate if customers will pay for it.” Now that we’re getting through this initial wave of experimentation and AI buildout, there’s quite a bit of sticker shock when the OpenAI bills come due! People are looking to build in model portability to enable them to switch to lower cost models (or opensource).
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+2/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+This brings me back to the initial point - the two announcements from OpenAI I want to highlight here.
+
+1. Context length: Context window of GPT 4 Turbo went from 8k tokens to 128k tokens (think of this as ~300 pages of text worth of input). This means what you can put into a prompt just went up dramatically
+
+2. Costs decreasing: GPT 4 Turbo is 3x cheaper for input tokens (think of this as roughly the length of the prompt) and 2x cheaper for output tokens. This equates to $0.01 per 1k input tokens, and $0.03 per 1k output tokens. On a blended basis, GPT 4 Turbo is roughly 2.5-3x
+
+cheaper than GPT 4.
+
+The cost decrease is very meaningful - it’s lowers the barrier to experiment with AI, and also lowers the barrier for these AI functionalities to be pushed into production (because vendors don’t have to increase price nearly as much). Also - As Moin pointed out on Twitter / X, as context windows increase the need for task / domain-specic models (or ne-tuned models) decreases. The counter argument to this is will we be able to nd enough high quality long context training data. Either way - it’s clear these models are becoming cheaper and more eective, which is an exciting future for AI! I think we’re about to see an explosion of good business model AI applications in the near future. 2024 will be the year of AI applications!
+
+Datadog Gives Soware the All Clear?
+
+This week soware stocks shot up on Tuesday, largely a result of Datadog’s quarterly earnings. Datadog in particular was up ~30%. So what happened? They made a number of comments about
+
+optimizations easing up, and the worst being behind us. Here are some quotes:
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+3/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+“It looks like we've hit an inection point. It looks like there's a lot less overhang now in terms of what needs to be optimized or could be optimized by customers. It looks like also optimization is less intense and less widespread across the customer base.”
+
+“We had a very healthy start to Q4 in October...the trends we see in early Q4 are stronger
+
+than they've been for the past year.”
+
+“As we look at our overall customer activity, we continue to see customers optimizing but with less impact than we experienced in Q2, contributing to our usage growth with
+
+existing customers improving in Q3 relative to Q2.”
+
+“As a reminder, last quarter, we discussed a cohort of customers who began optimizing about a year ago and we said that they appear to stabilize their users growth at the end of Q2. That trend has held for the past several months with that cohorts usage remainingstable throughout Q3.”
+
+Datadog was one of the rst companies to really highlight an improving macro environment. And even more important, they called out a great month of October (rst month of Q4 for them). So how do we contrast their positive commentary, with largely neutral commentary from the rest of the soware universe? Most likely Datadog is seeing trends more unique to their own business. As the market puts a greater emphasis on bundled platforms today vs point solutions, they appear to be an incremental winner of market share. Best of breed platforms (with more of a usage based model) will recover rst (in terms of revenue growth recovery). Datadog appears to be in that bucket and recovering rst. This doesn’t mean the rest of the soware universe will follow suite. There will be many “pretenders” who never recover and nd themselves bundled
+
+into oblivion. However, the positive commentary from Datadog is the rst sign that we’re
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+4/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+starting to turn a corner. So while the rest of the soware universe may not be at that corner today, we’re starting to see the light at the end of the tunnel.
+
+Quarterly Reports Summary
+
+Actual On24 $39.2M Squarespace $257.1M Jamf $142.6M Kaltura $43.5M CS Disco $34.9M 2U $229.7M Olo $57.8M Alteryx $232.0M RingCentral $558.2M Klaviyo $175.8M Datadog $547.5M Amplitude $70.6M Hubspot $557.6M BigCommerce $78.0M Twilio $1033.6M Wix.com $393.8M Reported Revenue Consensus $38.0M $251.8M $140.0M $43.1M $34.1M $223.4M $56.3M $210.3M $554.0M $167.4M $523.2M $70.0M $533.0M $78.0M $986.9M $389.7M 3.2% 2.1% 1.9% 1.0% 2.3% 2.8% 27% 10.3% 0.8% 5.0% 46% 0.9% 46% 0.1% 4T% 1.0% Guidance $37.3M $262.5M $148.5M $41.6M $35.0M $58.8M $337.0M $570.0M $196.0M $566.0M $71.6M $557.0M $81.8M $1035.0M $402.5M Next Quarter Rev Consensus $35.4M $256.0M $149.1M $42.2M $38.8M $300.0M $56.9M $337.8M $570.0M $195.1M $541.0M $70.3M $555.8M $82.0M $1029.0M $399.2M 5.4% 2.5% (0.4%) (1.4%) (9.8%) 3.3% (0.2%) 0.0% 0.5% 4.6% 1.8% 0.2% (0.2%) 0.6% 0.8%Top 10 EV / NTM Revenue Multiples
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+5/21
+
+Overall Median = 50x. 48x 33.7 = 75% = (16%) 8%
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+EV/NTM EV/2024 EV/NTM NTMRev Gross Operating FCF % in Top 10 Company Rev Rev FCF Growth Margin Margin Margin Multiple LTM 1 Snowflake 15.5x 13.4x 55x 27% 66% (41%) 25% 100% 2 MongoDB 14.6x 12.9x 133x 17% 74% (18%) 3% 67% 3 Palantir 14.5x 13.9x 58x 19% 80% 2% 22% 47% 4 Cloudflare 13.4x 12.6x 153x 28% 76% (16%) 8% 100% 5 Datadog 13.1x 12.4x 52x 19% 80% (5%) 25% 99% 6 CrowdStrike 12.5x 11.1x 37x 31% 74% (6%) 30% 31% 7 Adobe 12.3x 11.9x 30x 12% 88% 34% 40% 26% 8 ServiceNow 12.2x 11.6x 38x 21% 79% 8% 28% 70% 9 Samsara 11.8x 10.5x 393x 31% 72% (34%) (3%) 72% 10 Zscaler 11.8x 10.5x 48x 27% 78% (14%) 21% 36% 18% Clouded Judgement @jaminball ALTI METER
+
+Top 10 Weekly Share Price Movement
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+6/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+Company Datadog Alteryx Digital Ocean Couchbase MongoDB Sprout Social Qualys Cloudflare Snowflake 10 Dynatrace OoOOnN Da WN = 7 Day Share Price A 26% 19% 15% 13% 11% 11% 10% 10% 10% 8% Clouded Judgement 30 Day Share Price A 9% (2%) 1% (5%) 2% (7%) 3% (5%) (4%) 1% @jaminbal YTD Share Price A 36% (29%) (4%) 22% 86% (16%) 50% 38% 9% 29% Current Market Cap ($MM) $32,931 $2,597 $2,108 $759 $26,063 $2,642 $6,179 $20,878 $51,549 $14,528 1 ALTIMETER
+
+Update on Multiples
+
+SaaS businesses are generally valued on a multiple of their revenue - in most cases the projected revenue for the next 12 months. Revenue multiples are a shorthand valuation framework. Given most soware companies are not protable, or not generating meaningful FCF, it’s the only metric to compare the entire industry against. Even a DCF is riddled with long term assumptions. The promise of SaaS is that growth in the early years leads to prots in the mature years. Multiples shown below are calculated by taking the Enterprise Value (market cap + debt - cash) / NTM revenue.Overall Stats:
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+7/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+Overall Median: 5.0x
+
+Top 5 Median: 14.5x
+
+© 10Y: 4.6%
+
+10Y: 4.6%
+
+EV / NTM Revenue Multiples 25.0x 6.0% 20.0x 5.0% . 4.6% 4.0% 15.0x 3.0% 10.0x 7.8K 7.0% 5.0x 5.0x 1.0% 0.0x 0.0% Jan-15 Aug-15 Mar-16 Oct-16 May-17 Dec-17 Jul-18 Feb-19 Sep-19 Apr-20 Nov-20 Jun-21 Jan-22 Aug-22 Mar-23 Oct-23 Median == LT Pre Covid Average —— 10 Year Treasury Clouded Judgement @jaminball ALTIMETER
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+8/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+EV / NTM Revenue Multiples 90.0x 80.0x 70.0x 60.0x 50.0x 40.0x 30.0x 20.0x 14.5x 10.0x 5.0x 0.0x Jan-15 Aug-15 Mar-16 Oct-16 May-17 Dec-17 Jul-18 Feb-19 Sep-19 Apr-20 Nov-20 Jun-21 Jan-22 Aug-22 Mar-23 Oct-23 —== Median —=—=Top 5 Median Clouded Judgement @jaminball ALTIMETER
+
+Bucketed by Growth. In the buckets below I consider high growth >30% projected NTM growth,
+
+mid growth 15%-30% and low growth <15%
+
+High Growth Median: 11.8x
+
+Mid Growth Median: 7.4x
+
+e Low Growth Median: 3.9x
+
+Low Growth Median: 3.9x
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+9/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+EV / NTM Revenue Multiples 45.0x 40.0x 35.0x 30.0x 25.0x 20.0x 15.0x 10.0x 11.8x 74x 3.9x 5.0x 0.0x Jan-15 Aug-15 Mar-16 Oct-16 May-17 Dec-17 Jul-18 Feb-19 Sep-19 Apr-20 Nov-20 Jun-21 Jan-22 Aug-22 Mar-23 Oct-23 == High Growth Median == Mid Growth Median —==Low Growth Median Clouded Judgement @jaminball ALTIMETER
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+10/21
+
+O 6x |
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+EV / NTM Revenue 15x. 14x 13K 43x a ‘ax 12x x 6 6x 6x 6x x & TT ox & SS sx | sx Sx Sk Sx Median: 5.0x ax a x x ae aie x & oxo x on a 2 5 gesgeegzes EELESzaES SPESF ESTES EESEE : € i 2253223223 BeqZErese ge BES g2ae8 88 ° i : gi7i *E 3 Sse: “a8 2 oR g fF 2 § 5 22 5 & g : Clouded Judgement @jaminball ALTIMETEREV / NTM Rev / NTM Growth
+
+The below chart shows the EV / NTM revenue multiple divided by NTM consensus growth expectations. So a company trading at 20x NTM revenue that is projected to grow 100% would be trading at 0.2x. The goal of this graph is to show how relatively cheap / expensive each stock is
+
+relative to their growth expectations
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+11/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+Median EV / NTM Revenue / NTM Growth Multiples 1.0x 6.0% 0.9x 4.6% 0.8x 5.0% 0.7x 4.0% 0.6x 0.5x 3.0% 0.4% 0.38x 2.0% 0.3x 0.28x 0.2x 1.0% 0.1x 0.0x 0.0% Jan-15 Aug-15 Mar-16 Oct-16 May-17 Dec-17 Jul-18 Feb-19 Sep-19 Apr-20 Nov-20 Jun-21 Jan-22 Aug-22 Mar-23 Oct-23 === Median EV / Rev / Growth ——=LT Average —— 10 Year Treasury Clouded Judgement @jaminball ALTIMETER
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+12/21
+
+| | 2
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+Growth Adjusted EV / NTM Revenue (EV / NTM Rev / NTM Growth) . 03x 0. 03x 9.x o.3x°b.x rape aes = 02 ax 0.2% SoPax Ol is ox fone. Sexgegerys B2eseseregsegs 84 SeRECSELSRESPEESESERS geSR2eRa eeae3e833 gecitesesesegs a3 sepe2s2 25222 E5255 22 sper sia. on EX 82ER° 28 BEES Es ges 2 585 es geze Se azse sees aes Ee 82 g eo "g 32 $83 6 g&* “3s 3 = gf ¢& 8S $B 5s 5 3 i s 38 5S Clouded Judgement @jaminball ALTIMETER
+
+EV / NTM FCF
+
+The line chart shows the median of all companies with a FCF multiple >0x and <100x. I created
+
+this subset to show companies where FCF is a relevant valuation metric.
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+13/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+EV / NTM FCF Multiples 70.0x 60.0x 50.0x 40.0x 40.1x 30.0x 29.8x 20.0x 10.0x -Ox 1/1/15 1/1/16 1/1/17 1/1/18 1/1/19 1/1/20 1/1/21 1/1/22 1/1/23 === FCF Positive & <100x Multiple Median ——=LT Average Clouded Judgement @jaminball ALTIMETER
+
+Companies with negative NTM FCF are not listed on the chart
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+14/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+Ev / NTM FCF s00r gay 350x 300x 250x 150% 133% 102«88x 100x ees88: 335 oa 30x 29x 23x 23x ae % « PRED R RRR RRR RR PIII SSP LF EH SSF WS LISI SEES CFSE EM Ss 3 os go Sa 3 oh VS SEE LES EES LS FESS s SES So ae EF FS KFS é FX OY A se £ Ss = is oe es & SF ESE KP FES ES SE SKS ne SFP ICE pK FESS SPP HES LE MS s FH PS ‘e x ESSE MG ew fee ef Clouded Judgement @jaminball ALTIMETERScatter Plot of EV / NTM Rev Multiple vs NTM Rev Growth
+
+Scatter Plot of EV / NTM Rev Multiple vs NTM Rev Growth
+
+How correlated is growth to valuation multiple?
+
+How correlated is growth to valuation multiple?
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+15/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+NTM Rev Growth vs NTM Rev Multiple 18x 16x Mos e eeu 14x © 0006 12x 10x 8x &x 4x OBK@ sox ‘Docu 10 euw (5%) 0% 5% 10% 15% 20% Clouded Judgement @jaminball eu 25% @ snow @xnor © ser 30% 35% ALTIMETER
+
+Operating Metrics
+
+e Median NTM growth rate: 15%
+
+Median NTM growth rate: 15%
+
+e Median LTM growth rate: 21%
+
+Median LTM growth rate: 21%
+
+e Median Gross Margin: 75%
+
+Median Gross Margin: 75%
+
+e Median Operating Margin (18%)
+
+Median Operating Margin (18%)
+
+e Median FCF Margin: 8%
+
+Median FCF Margin: 8%
+
+e Median Net Retention: 114%
+
+Median Net Retention: 114%
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+16/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+Median CAC Payback: 35 months
+
+Median S&M % Revenue: 42%
+
+e Median R&D % Revenue: 26%
+
+Median R&D % Revenue: 26%
+
+Median G&A % Revenue: 17%
+
+Comps Output
+
+Rule of 40 shows rev growth + FCF margin (both LTM and NTM for growth + margins). FCF calculated as Cash Flow from Operations - Capital Expenditures
+
+GM Adjusted Payback is calculated as: (Previous Q S&M) / (Net New ARR in Q x Gross Margin) x 12 . It shows the number of months it takes for a SaaS business to payback their fully burdened CAC on a gross prot basis. Most public companies don’t report net new ARR, so I’m taking an implied ARR metric (quarterly subscription revenue x 4). Net new ARR is simply the ARR of the current quarter, minus the ARR of the previous quarter. Companies that do not disclose
+
+subscription rev have been le out of the analysis and are listed as NA.
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+17/21
+
+ss 0 9 Ss 0 = = — = = | _ _ —
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin BallSnowllake MongoDB Cloudfiare Datadog CrowdStrike SeniceNow Samsara Zscaler Atlassian Qualys AppFolio Shopify GitLab Dynatrace Palo Alto Veeva HubSpot Autodesk Freshworks Valuation Market Cap Ev $51,549 $48,105 $26,063 $25,355 $39,755 $36,790 $20,878 $20,723 $32,931 $31,477 $45551 $43,206 $263,045 $259,625 $127,051 $125,244 $12,603 $11,985 $25,122 $24,232 $44,087 $43,123 $6,179 $5,750 $7,110 $6,963 $77,608 $73,812 $6,694 $5,755 $14,528 $13,903 $75,401 $72,234 $26,765 $22,955 $20,893 $20,164 $4,487 $4,067 $43,753 $44,126 $3,080 $2,376 $6,449 $6,067 $59,068 $55,658 $7,341 $6,991 $6,471 $5,551 $4,702 $4,709 $2,642 $2,540 $24,699 $26,321 $3,199 $3,168 $7,175 $6,633 $5,035 $3,901 Rev Multiple FCF Multiple LIM =NTM —-2024—S LTM_—sNTM 19.7x 15.5x 134x 77x 55x 17.1% 14.6x—12.9x S56 1x 133 Wax 145x13.9x 78x 58x 17.1% 13.4x—12.6x 202k =—s«183x 15.7x13.1x 12.4x—Ss«é 52x 164x12.5x 44x Sx 37x 13.7% 123x119 34 30x 148% 122 «46x 5x 38x 154x 11.8x 105k NM 393x 150x 14.8x 10.5k 73x 48x 416x =10.0x 96x 46x 42x 10.6x 9.6x 9.3x 24x 29x 122% 9.6x 91x 334K 51x 1x 84x 89x 135x 60x 15x 9.3x 81x NM 282x 10.7%x 9.0x 8.7x 42x 39x 10.5x 8.8x 81x 27x 21x 103 88x 81x 23x 23x 9.8x 8.3x 7.9K 95x 62x 10.0x 82 7.3x NM NM 8.5x 7.7x 7.3x 20x 30x 87x 7.4x 6.8x NM NM 95x 7.4x 7.0x 125x 78x 8.3x 7.1x 6.6x 36x 29x 7% 71x 67x 33x 61x 8.9x 6.9x 6.1x 43x 38x 7.8x 6.7x 6.4x 111K 59x 8.x 6.4x 60x 218x 85x 6.8x 6.3x 6.0x 33x 26x 7.1% 6.2x 57x 559x 56x 7.4x 6.2 59x 23x 74x 6.8x 5.8x 5.6x 73x 40x Rev Growth LT™ NTM 49% 27% 37% 17% 16% 19% 35% 28% 31% 19% 44% 31% 10% 12% 22% 21% 46% 31% 48% 27% 24% 16% 15% 11% 29% 27% 27% 18% 51% 23% 25% 19% 25% 19% 12% 17% 26% 18% 37% 22% 10% 10% 3% 17% 57% 28% 18% 16% 11% 9% 52% 29% 18% 15% 30% 29% 26% 8% 31% 15% 34% 21% 21% 18% Revenue Margin Margin L™ Gross $2,444 66% $1,487 74% $2,125 80% $1,209 76% $2,008 80% $2,642 74% $18.886 88% $8,474 79% $780 72% $1,617 78% $3,705 82% $541 80% $573 60% $6,651 49% $502 89% $1,297 81% $6,893 72% $2,232 71% $2,058 83% $409 68% $5,212 90% $274 64% $585 75% $6,716 74% $905 51% $625 89% $607 75% $310 77% $3,843 79% $445 59% $892 81% $569 82% Operating FCF Margin LTM (41%) (18%) 2% (16%) (6%) (6%) 34% 8% (24%) (14%) (9%) 28% (8%) (6%) (43%) 9% 6% 18% (6%) (37%) (106%) (4%) (1%) (17%) (12%) (16%) (21%) (1%) (15%) (28%) (33%) 25% 3% 22% 8% 25% 30% 40% 28% (3%) NIM 26% 10% 25% 9% 25% 31% 41% 23% 24% 19% 15% 37% 13% (3%) 25% (17%) 24% 11% PRRRRE2 Rule of 40 LT™ NTM 75% 53% 40% 27% 38% 44% 44% 37% 56% 44% 74% 62% 50% 53% 51% 53% 43% 33% 69% 51% 49% 40% 61% 43% 33% 46% 35% 34% 51% 26% 50% 42% 63% 58% 55% 54% 37% 31% 30% 19% 52% 36% (48%) 0% 65% 37% 41% 40% 14% 20% 73% 46% 25% 27% 34% 36% 47% 32% 33% 26% 38% 29% 30% 33% LTM Operating Expenses % Rev SRTEPTIFFFRRZIIIPISSS & # 3 PFSF93 24% 24% 13% 7% 10% 6% 16% 11% 17% 27% 12% 6% 11% 11% 23% 11% 28% 15% 10% 19% 14% 18% 24% 11% 18% 21% 28% 26% 16% 16% 16% 20% 20% 11% 20% 38% Net GM Adj. Expansion Payback Current 142% 29Months $156 120% 13 Months $365 $18 116% 21 Months $62 120% 14 Months $100 120% 23 Months $191 $578 24 Months $620 115% 26 Months $24 121% 25 Months $171 5 Months $174 $168 8 Months $199 $60 124% 27 Months $43 114% 37 Months $49 $243 7 Months $167 103% 34 Months $415 120% 20 Months $45 105% $205 62 Months $26 119% 25 Months $25 22Months $225 $90 110% 27 Months $136 112% 43 Months $87 56 Months S47 116% 7 Months $147 60 Months $28 24 Months $50 106% 37 Months $17 Share Price Performance % Week % 30 Days 10% (4%) 11% 2% 2% 3% 10% (8%) 26% 9% 4% 4% 3% 8% 3% 1% 4% (6%) 7% (1%) (6%) (17%) 10% 3% 6% 3% 1% 10% 4% (9%) 8% 1% @%) (6%) (12%) (22%) (2%) (11%) 5% (4%) 3% (4%) (4%) (2%) (18%) (28%) 6% 2% (0%) (2%) 6% (9%) (0%) (14%) 11% 7%) (0%) 0% (2%) (5%) (1%) (27%) (7%) (9%) YTD 86% 185% 38% 36% 81% 72% 60% 90% 53% 33% 50% 89% 74% (5%) 74% 3% 66% 10% 133% (17%) 35% 43% 11% 4% (16%) 70% 7% 6% 16%Confluent Smartsheet Tenable Unity Appian Digital Ocean Zoominfo Fived Ona Sprinkir Hashicorp Bill.com Squarespace Fastly Box Dropbox PagerDuty Jam{ ay Couchbase Alteryx Amplitude Wix.com Zoom Valuation Market Cap EV $4,185 $3,932 $204,340 $205,792 $2,712 $2234 $8,376 $8,140 $9,402 $7,636 $4,521 $3,814 $7,250 $6,885 $10,104 $9,649 $5,200 $4,442 $3,186 $3,213 $5,361 $4,869 $4,342 $4,064 $9,592 $11,044 $2,608 $2,717 $2,108 $3,383 $4,907 $5.713 $4,444 $4,539 $10,877 $10,466 $3,846 $3,250 $3,800 $2,571 $5,980 $5,245 $3,862 $4,339 $2,144 $2,248 $3,644 $4,225 $9,076 $10,028 $1,932 $1,730 $2,018 $2,157 $1,959 $2,214 $759 $600 $2,597 $3.248 $1,220 $901 $4,953 $4,922 $18,253 $12,310 Rev Multiple FCF Multiple LIM —soONTM=—s2024 LTM_—sNTM 6.5x 5.8x 5.4x NM NM 6.x 5.6x 53x 27x 21x 6.8x 5.6x 5.3x 48x 33x 6.6x 5.6x 54x 31x 27x 6.7x 55x 5.1K 45x 29% 7.3x 55x 48x NM NU 6.2x 5.3x 4.9x 86x 41x 5.9x 5.3x 5.2 32x 28x 6.1x 5.0x 47x NM 727x 5.6x 5.0x 4.9x 38x 28x 5.6x 47x 4.2x 55x 34x 5.3x 4.7% 4.5x 4x 25x 61x 4% 4.x NM 30x 5.2% 4.6x 44x NM NI 5.0x 45x 4.4x 30x 21x 47x 45x 45x 44x 44x 5.x 48x 4.3x 50x 47x 5.1x 44x 4.1% 42x 2% 4.8x 4.2 3% 127 36x 47x 4.x 3.8x NM 88x 4.6x 4.2 4.0x 27x 28x 45x 4.0x 3.x 22x 47x 46x 4.0x 3.8x NM NIM 41x 3.9% 38x 14x 13x 44x 3.x 3.x 13x 44x 43x 3.8x 35x 40x 23x 4.0x 3.x 3.3x 40x 20x 3.6x 33x 3.2x 46x 38x 37x 3.x 3.0x NM NM 3.5x 3.2 3.0x NM 43x 3.3x 3.4% 30x 257 43x 3.3x 2.9% 28x 67x 16x 2.8x 27% 2.6x 41x x Rev Growth LIM NIM 30% 12% 13% 11% 25% 22% 34% 18% 15% 21% 73% 33% 21% 17% 26% 12% 36% 21% 15% 12% 32% 20% 19% 13% 48% 25% 18% 12% 27% 10% 20% 3% 18% 15% 29% 14% 21% 15% 38% 13% 50% 11% 15% 1% 19% 16% 8% 5% 8% 3% 25% 12% 19% 16% 11% 10% 17% 13% 26% 11% 22% 8% 11% 12% 4% 2% Revenue Margin Margin LT™ Gross $607 90% $33,071 75% $329 78% $1,239 69% $1,148 84% $524 68% $1,113 73% $1,630 84% $732 69% $574 75% $867 79% $770 77% $1,808 68% $526 73% $675 60% $1,225 85% $880 53% $2,065 72% $674 75% $542 81% $1,134 82% $970 82% $488 52% $1,020 75% $2,466 81% $406 82% $540 77% $609 47% $164 86% $920 86% $270 69% $1,513 65% $4,464 75% Operating FCF Margin LT™™ (56%) 13% (26%) 15% (21%) (79%) (15%) 28% (65%) 3% (18%) (8%) (53%) (25%) 2% 21% (11%) (31%) (1%) (54%) (23%) 40% (41%) 5% 14% (25%) (22%) (16%) (47%) (27%) (39%) (6%) 3% (14%) 23% 14% 21% 15% (26%) 7% 19% (22%) 15% 10% 16% (7%) (24%) 17% 33% 10% 12% (10%) 17% (10%) 11% 10% 8% (23%) (7%) 1% 26% NTM. (4%) 27% 17% 21% 18% (3%) 12% 19% 1% 18% 13% 19% 15% (8%) 10% 16% 11% 5% 15% 24% (5%) 36% 16% 18% (10%) 18% Rule of 40 LIM___NTM 16% 8% 36% 37% 39% 38% 55% 30% 30% 30% 47% 30% 28% 29% 45% 30% 14% 21% 20% 30% 42% 33% 35% 32% 41% 40% (6%) 4% 43% 32% 53% 36% 29% 24% 41% 30% 25% 26% 28% 18% 67% 26% 35% 35% 8% 11% 38% 35% 38% 39% 35% 29% 30% 33% 18% 18% (6%) 3% 19% 18% 23% 15% 16% 29% 30% 32% LTM Operating Expenses % Rev R&D S&M 69% 39% 44% 58% 70% 46% 25% 69% 44% 56% 50% 40% 47% 12% 34% 33% 52% 49% SSRRRFES 74% $338 52% 15% 41% 14% 27% 41% 28% 11% 46% 19% 26% 30% 16% 18% 31% 13% 24% 31% 24% 34% 24% 23% 37% 25% 34% 19% GBA 24% 8% 18% 15% 20% 36% 13% 17% 19% 15% 14% 22% 21% 25% 13% 13% 21% 14% 25% 26% 14% 23% 13% 25% 20% 17% 23% 22% 21% 11% 15% 33% 9% 26% 12% 32% 38% 19% 7% 46% 14% 22% 18% 26% a 14% 15% 23% 33% 8% 31% 27% 11% 27% 19% 14% 29% 17% 12% 21% 27% 31% 15% 31% Net GM Adj. SBC Expansion Payback Current 105% 31 Months $19 34 Months $210 119% 32Months $26 $149 121% 39 Months $17 115% 31 Months $15 113% 36 Months $74 $168 130% 42Months $17 105% 36 Months $52 121% 28Months $40 58 Months $37 106% $25 117% 25Months $36 96% 31 Months $25 62 Months $13 64 Months $61 115% 27 Months $66 120% 61 Months $14 124% 62Months $20 111% 77 Months $56 $28 114% §5Months $16 103% 37 Months $25 72 Months $26 114% 37 Months $21 108% 45 Months $16 360 Months $33 115% 48 Months $16 119% 77 Months $36 99% 122Months $10 $87 109% 50Months $61 Share Price Performance % Week % 30 Days (1%) 6% 1% 2% (2%) 7% (13%) (26%) 0% (3%) 1% (10%) 4% (9%) 3% (39%) 4% (46%) 2% (6%) 2% (8%) 5% (17%) (3%) (16%) (15%) (17%)15% 1% (1%) (27%) 8% (6%) (2%) (22%) 2% (1%) 2% (12%) (37%) (51%) (1%) (7%) (0%) (0%) 1% (1%) (1%) (6%) 1% (3%) (1%) (7%) 1% 2% 13% (5%) 19% (2%) 0% (7%) 6% (1%) (1%) (10%) YTD 38% 58% 21% (23%) 31% 5% 43% (46%) (24%) (23%) (3%) (12%) 9% (4%) (10%) (3%) 74% (49%) 28% 100% (19%) 17% (22%) (25%) 24% (29%) (15%) 13% (10%)https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+18/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+Valuation Rev Multiple FCF Multiple Rev Growth LTM Gross Operating FCF Margin Rule of 40 LTM Operating Expenses % Rev Net GM Adj. Share Price Performance Market Cap EV LIM NIM 2024 LIM NIM LIM NTM Revenue Margin Margin. LTM NIM LIM NIM S&M R&D G&A SBC Expansion Payback Current % Week %30Days YTD DocuSign $8,136 $7.571 2.9% 27x 2.6x 14x 12x 14% 6% $2,654 79% 1% 21% 22% 34% 28% 45% 19% 15% 22% 102% 30 Months $40 0% (5%) (28%) Zuora $1,085 $941 23x 2.1% 2.0x NM 22x 12% 9% $415 63% (23%) (3%) 9% 9% 18% 42% 25% 20% 23% 107% 74 Months $8 4% (3%) 21% BigCommerce $639 $692 23x 2.1% 2.0x NM 48x 10% 13% $298 75% (29%) (22%) 4% (12%) 18% 47% 30% 24% 15% NM $s (10%) (16%) (4%) Walkie $807 $522 2.0x 1.9x 18x NM 30x 18% 8% $260 81% (35%) (9%) 6% 9% 14% 67% 22% 27% 21% 106% 183 Months $9 (1%) 4% (18%) Twilio $10,138 $7,467 1.8x 1.8% 1.7x NM 23x 19% 2% $4,052 48% (18%) (6%) 8% 13% 10% 28% 25% 13% 18% 101% NM $56 7% (4%) 14% RingCentral $2,500 $4,103 1.9% 17x 17x 19x 12x 13% 9% $2,156 69% (12%) 10% 14% 23% 23% 50% 16% 14% 19% 99% 101 Months $27 (2%) (12%) (25%) Yext $776 $687 17x 1.7x 1.6x 47x 16x 1% 3% $403 76% (6%) 10% 11% 11% 13% 47% 17% 18% 13% 97% NM $6 3% (2%) (5%) Oto $739 $380 1.8x 1.6x 18x NM 16x 23% 16% $215 64% (27%) (8%) 10% 15% 25% 21% 35% 35% 24% 119% 23 Months $5 (19%) (24%) (28%) Kaltura $252 $235 14x 14x 1.3x NM NM 2% 0% $172 64% (26%) (12%) (4%) (10%) (4%) 33% 32% 5% 15% 101% NM $2 1% 2% 3% Domo $312 $377 1.2x 1.2x 1.2% NM NM 11% (0%) $318 76% (20%) (6%) (2%) 6% (2%) 30% 29% 12% 22% 99% NM $e 2% (10%) (39%) CS Disco $354 $185 1.4x 1.2 1.1% NM NM (1%) 18% $135 75% (59%) (38%) (11%) (39%) 7% 56% 45% 33% 20% 121 Months $6 (2%) (7%) (8%) 2uU $195 $1,104 1.2x 1.1x 1.4x NM 9x (5%) 13% $926 71% (4%) (3%) 12% (7%) 25% 40% 20% 15% 6% $2 5% 0% (62%) 8x8 $342 $738 1.0x 1.0x 1.0x 15x 10x 3% 1% $737 70% (3%) 7% 10% 10% 11% 35% 20% 11% 9% 297 Months $3 (10%) 13% (35%) Riskified $696 $257 0.x 08x 07x NM 384x 18% 14% $284 52% (31%) (6%) 0% 12% 14% 31% 26% 26% 22% $4 3% (3%) (15%) Agora $322 $122 08x 0.8x 0.7x NM NM (8%) 2% $162 61% (53%) (135%) (14%) (143%) (13%) 30% 61% 25% 19% 108% NM $3 6% 16% (19%) On24 $273 $66 04x 0.5x 0.4x NM 102x (13%) (15%) $171 71% (36%) (12%) 0% (25%) (14%) 55% 25% 27% 23% NM $7 8% 3% (24%) Overall Average 9) 5 8) 55 39 3) 23% 45% $2060 73% 17% 63 143 29% 285 42 20% 83 218 413% 53Months 1 7 16°
+
+Sources used in this post include Bloomberg, Pitchbook and company lings
+
+The information presented in this newsletter is the opinion of the author and does not necessarily reect the view of any other person or entity, including Altimeter Capital Management, LP ("Altimeter"). The information provided is believed to be from reliable sources but no liability is accepted for any inaccuracies. This is for information purposes and should not be construed as an investment recommendation. Past performance is no guarantee of future performance. Altimeter is an investment adviser registered with the U.S. Securities and
+
+Exchange Commission. Registration does not imply a certain level of skill or training.
+
+This post and the information presented are intended for informational purposes only. The views expressed herein are the author’s alone and do not constitute an oer to sell, or a recommendation to purchase, or a solicitation of an oer to buy, any security, nor a recommendation for any investment product or service. While certain information contained herein has been obtained from sources believed to be reliable, neither the author nor any of his employers or their aliates have independently veried this information, and its accuracy and completeness cannot be guaranteed. Accordingly, no representation or warranty, express orhttps://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+19/21
+
+11/14/23, 8:35 PM
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+implied, is made as to, and no reliance should be placed on, the fairness, accuracy, timeliness or completeness of this information. The author and all employers and their aliated persons assume no liability for this information and no obligation to update the information or analysis contained herein in the future.
+
+|
+
+Type your email...
+
+Subscribe
+
+@? DBD
+
+35 Likes · 3 Restacks
+
+2 Comments
+
+Write a comment...
+
+Write a comment...
+
+Stefan Waldhauser Writes High Growth Investing Nov 12
+
+Thank you for your interesting thoughts regarding the monetization layers of AI. Really inspiring!
+
+Q
+
+LIKE
+
+©
+
+REPLY
+
+(ft)
+
+SHARE
+
+Matthew Harris Writes Agora Nov 10
+
+Good stuff as always. Your point about the reduced costs per token is interesting and hopefully
+
+allows companies to experiment with AI more in their workflows
+
+LIKE REPLY SHARE
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+20/21
+
+11/14/23, 8:35 PM
+
+https://cloudedjudgement.substack.com/p/clouded-judgement-111023
+
+Clouded Judgement 11.10.23 - by Jamin Ball
+
+© 2023 Jamin Ball ∙ Privacy ∙ Terms ∙ Collection notice Substack is the home for great writing
+
+21/21
