@@ -54,17 +54,17 @@ def get_cpm(model_path, max_memory_map):
     return model
 
 @st.cache_resource
-def get_multiModal_retriever(text_fpath, img_fpath, embed_model_path):
-    retriever = build_multiModal_retriever(text_fpath, img_fpath, embed_model_path)
+def get_multiModal_retriever(dataBase_url, embed_model_path, token_size):
+    retriever = build_multiModal_retriever(dataBase_url, embed_model_path, token_size)
     return retriever
 
 @st.cache_resource
-def get_parentChunk_retriever(full_text_fpath,
+def get_parentChunk_retriever(dataBase_url,
                               embed_model_path,
                               parent_chunkSize=500,
                               child_chunkSize=200):
 
-    retriever = build_parentChunk_retriever(full_text_fpath,
+    retriever = build_parentChunk_retriever(dataBase_url,
                                             embed_model_path,
                                             parent_chunkSize,
                                             child_chunkSize)
@@ -79,14 +79,13 @@ def convert_image_from_base64(base64_str):
 
 if __name__ == "__main__":
     # context path
-    text_fpath = './data/1200/doc/500token'
-    img_fpath = './data/1200'
-    full_text_fpath = './data/1200/doc/s7-1200文档.txt'
+    dataBase_url = './data/rag'
     embed_model_path = './model_pool/bge-m3'
+    token_size = '500token'
 
     # init retriever
-    retriever_multiModal = get_multiModal_retriever(text_fpath, img_fpath, embed_model_path)
-    retriever_parentChunk = get_parentChunk_retriever(full_text_fpath,
+    retriever_multiModal = get_multiModal_retriever(dataBase_url, embed_model_path, token_size)
+    retriever_parentChunk = get_parentChunk_retriever(dataBase_url,
                                                       embed_model_path)
 
     # cpm config
