@@ -153,7 +153,7 @@ if __name__ == "__main__":
         # multimodal rag
         res_multiModal_with_score = retriever_multiModal.vectorstore.similarity_search_with_score(question_trans)
         res_multiModal_score = res_multiModal_with_score[0][1]
-        # res_multiModal_most_related_type = ""
+        res_multiModal_most_related_type = ""
         res_multiModal_rag_text = ""
 
         if res_multiModal_score < 0.6:
