@@ -1,3 +1,4 @@
+from typing import Optional, List, Dict, Any, Generator
 from langchain.llms.base import LLM
 from typing import Any, List, Optional, Dict
 from langchain.callbacks.manager import CallbackManagerForLLMRun
@@ -55,6 +56,7 @@ class ChatGLM4_LLM(LLM):
         chat_history = kwargs.get('chat_history')
         context = kwargs.get('context')
         prompt_template = kwargs.get('prompt_template')
+        stream = kwargs.get('stream')
 
         if prompt_template == "CHATGLM_TEMPLATE":
             system_prompt = PROMPT_TEMPLATE_ZH_LC[prompt_template]
@@ -74,7 +76,30 @@ class ChatGLM4_LLM(LLM):
                 {"role": "user", "content": prompt},
             ]
 
-        return self._generate_response(messages)
+        if not stream:
+            return self._generate_response(messages)
+
+        else:
+            yield from self._stream_output(messages)
+
+
+    def _stream_output(self, messages) -> Generator[
+        str, None, None]:
+        """Stream output generator."""
+
+        model_inputs = self.tokenizer.apply_chat_template(
+            messages,
+            tokenize=True,
+            return_tensors="pt",
+            return_dict=True,
+            add_generation_prompt=True
+        )
+
+        model_inputs = model_inputs.to('cuda')
+        generated_ids = self.model.generate(**model_inputs, **self.gen_kwargs)
+        for input_ids, output_ids in zip(model_inputs['input_ids'], generated_ids):
+            generated_text = self.tokenizer.decode(output_ids, skip_special_tokens=True)
+            yield generated_text + "\n"
 
     def query_transfer(self, question, history) -> str:
         conversation = ""
