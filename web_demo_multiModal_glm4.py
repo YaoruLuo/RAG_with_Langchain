@@ -204,7 +204,8 @@ if __name__ == "__main__":
         response = glm.invoke(question,
                               chat_history=history,
                               context=prompt_context,
-                              prompt_template="RAG_CHATGLM_TEMPLATE")
+                              prompt_template="RAG_CHATGLM_TEMPLATE"
+                              )
 
         message_placeholder.markdown(response)
 

@@ -1,9 +1,8 @@
-from typing import Optional, List, Dict, Any
-from langchain import LLM, CallbackManagerForLLMRun
 from langchain.llms.base import LLM
 from typing import Any, List, Optional, Dict
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from transformers import AutoTokenizer, AutoModelForCausalLM
+# from promptTemplate import PROMPT_TEMPLATE_ZH, PROMPT_TEMPLATE_ZH_LC
 from model_pool.promptTemplate import PROMPT_TEMPLATE_ZH, PROMPT_TEMPLATE_ZH_LC
 import torch
 
@@ -53,7 +52,7 @@ class ChatGLM4_LLM(LLM):
               run_manager: Optional[CallbackManagerForLLMRun] = None,
               **kwargs: Any) -> str:
 
-        chat_history = kwargs.get('chat_history', [])
+        chat_history = kwargs.get('chat_history')
         context = kwargs.get('context')
         prompt_template = kwargs.get('prompt_template')
 
@@ -64,23 +63,18 @@ class ChatGLM4_LLM(LLM):
         elif prompt_template == "QUERY_TRANSFORM_TEMPLATE":
             system_prompt = PROMPT_TEMPLATE_ZH_LC[prompt_template]
 
-        if not chat_history:
+        if len(chat_history) == 0:
             messages = [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt},
             ]
-            return self._generate_response(messages)
-
         else:
             messages = chat_history + [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt},
             ]
-            response = self._generate_response(messages)
-            chat_history.pop(-1)
-            chat_history.pop(-1)
-            return response
 
+        return self._generate_response(messages)
 
     def query_transfer(self, question, history) -> str:
         conversation = ""

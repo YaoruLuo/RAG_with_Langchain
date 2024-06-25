@@ -7,7 +7,6 @@ from model_pool.promptTemplate import PROMPT_TEMPLATE_ZH, PROMPT_TEMPLATE_ZH_LC
 import torch
 
 class ChatGLM4_LLM(LLM):
-
     tokenizer: AutoTokenizer = None
     model: AutoModelForCausalLM = None
     gen_kwargs: dict = None
@@ -26,13 +25,31 @@ class ChatGLM4_LLM(LLM):
         ).to("cuda").eval()
         print("Finish loading GLM4!")
 
-        self.gen_kwargs = gen_kwargs
+        self.gen_kwargs = gen_kwargs or {}
+
+    def _generate_response(self, messages):
+        """Generate response given a list of messages."""
+        print(f"====input messages for model====: {messages} \n")
+
+        model_inputs = self.tokenizer.apply_chat_template(
+            messages,
+            tokenize=True,
+            return_tensors="pt",
+            return_dict=True,
+            add_generation_prompt=True
+        )
+
+        model_inputs = model_inputs.to('cuda')
+        generated_ids = self.model.generate(**model_inputs, **self.gen_kwargs)
+        generated_ids = [
+            output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs['input_ids'], generated_ids)
+        ]
+        response = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        return response
 
     def _call(self, prompt: str, stop: Optional[List[str]] = None,
               run_manager: Optional[CallbackManagerForLLMRun] = None,
               **kwargs: Any) -> str:
-
-        system_prompt = None
 
         chat_history = kwargs.get('chat_history')
         context = kwargs.get('context')
@@ -50,72 +67,23 @@ class ChatGLM4_LLM(LLM):
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt},
             ]
-
-            print(f"====input for chat model====: {messages} \n")
-
-            model_inputs = self.tokenizer.apply_chat_template(
-                messages,
-                tokenize=True,
-                return_tensors="pt",
-                return_dict=True,
-                add_generation_prompt=True
-            )
-
-            model_inputs = model_inputs.to('cuda')
-            generated_ids = self.model.generate(**model_inputs, **self.gen_kwargs)
-            generated_ids = [
-                output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs['input_ids'], generated_ids)
-            ]
-            response = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-            return response
-
         else:
-            chat_history.append({"role": "system", "content": system_prompt})
-            chat_history.append({"role": "user", "content": prompt})
-            messages = chat_history
-
-            print(f"====input for chat model====: {messages} \n")
-
-            model_inputs = self.tokenizer.apply_chat_template(
-                messages,
-                tokenize=True,
-                return_tensors="pt",
-                return_dict=True,
-                add_generation_prompt=True
-            )
-
-            model_inputs = model_inputs.to('cuda')
-            generated_ids = self.model.generate(**model_inputs, **self.gen_kwargs)
-            generated_ids = [
-                output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs['input_ids'], generated_ids)
+            messages = chat_history + [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt},
             ]
-            response = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-            chat_history.pop(-1)
-            chat_history.pop(-1)
-            return response
 
-    @property
-    def _identifying_params(self) -> Dict[str, Any]:
-        """返回用于识别LLM的字典,这对于缓存和跟踪目的至关重要。"""
-        return {
-            "model_name": "glm-4-9b-chat",
-            "max_length": self.gen_kwargs.get("max_length"),
-            "do_sample": self.gen_kwargs.get("do_sample"),
-            "top_k": self.gen_kwargs.get("top_k"),
-        }
-
-    @property
-    def _llm_type(self) -> str:
-        return "glm-4-9b-chat"
+        return self._generate_response(messages)
 
     def query_transfer(self, question, history) -> str:
         conversation = ""
         if len(history) > 0:
-            latest_usr_histoy, latest_ai_history = history[-2], history[-1]
-            usr_role, ai_role = latest_usr_histoy["role"], latest_ai_history["role"]
-            usr_chat, ai_chat = latest_usr_histoy["content"], latest_ai_history["content"]
-            conversation = str({usr_role: usr_chat, ai_role: ai_chat})
+            latest_usr_history, latest_ai_history = history[-2], history[-1]
+            conversation = str({latest_usr_history["role"]: latest_usr_history["content"],
+                                latest_ai_history["role"]: latest_ai_history["content"]})
+
         system_prompt = PROMPT_TEMPLATE_ZH_LC["QUERY_TRANSFORM_TEMPLATE"].format(conversation=conversation)
+
         print(f"====prompt query transfer====:{system_prompt} \n")
 
         messages = [
@@ -123,23 +91,21 @@ class ChatGLM4_LLM(LLM):
             {"role": "user", "content": question},
         ]
 
-        print(f"====input for query transfer model====: {messages} \n")
+        return self._generate_response(messages)
 
-        model_inputs = self.tokenizer.apply_chat_template(
-            messages,
-            tokenize=True,
-            return_tensors="pt",
-            return_dict=True,
-            add_generation_prompt=True
-        )
+    @property
+    def _identifying_params(self) -> Dict[str, Any]:
+        """Return identifying parameters for caching and tracking purposes."""
+        return {
+            "model_name": "glm-4-9b-chat",
+            "max_length": self.gen_kwargs.get("max_length", None),
+            "do_sample": self.gen_kwargs.get("do_sample", None),
+            "top_k": self.gen_kwargs.get("top_k", None),
+        }
 
-        model_inputs = model_inputs.to('cuda')
-        generated_ids = self.model.generate(**model_inputs, **self.gen_kwargs)
-        generated_ids = [
-            output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs['input_ids'], generated_ids)
-        ]
-        response = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-        return response
+    @property
+    def _llm_type(self) -> str:
+        return "glm-4-9b-chat"
 
 def build_chat_history(history, question, answer, rag_img_path = None):
     history.extend(
