@@ -17,7 +17,8 @@ from multiModalRag.embedding import build_multiModal_retriever, build_parentChun
 from multiModalRag.rag import split_image_text_types
 import matplotlib.pyplot as plt
 import numpy as np
-from model_pool.langchainLLM import ChatGLM4_LLM, build_chat_history
+# from model_pool.langchainLLM import ChatGLM4_LLM, build_chat_history
+from model_pool.test import ChatGLM4_LLM, build_chat_history
 from model_pool.LLM import MiniCPM_Llama3_int4, ChatGLM, MiniCPM_Llama3
 import base64
 from PIL import Image
@@ -204,7 +205,8 @@ if __name__ == "__main__":
         response = glm.invoke(question,
                               chat_history=history,
                               context=prompt_context,
-                              prompt_template="RAG_CHATGLM_TEMPLATE"
+                              prompt_template="RAG_CHATGLM_TEMPLATE",
+                              stream=True
                               )
 
         message_placeholder.markdown(response)

@@ -142,7 +142,8 @@ if __name__ == "__main__":
     answer1 = llm.invoke(question1,
                          chat_history=history,
                          context=context1,
-                         prompt_template=prompt_template)
+                         prompt_template=prompt_template,
+                         stream=True)
 
     history = build_chat_history(history, question1, answer1)
     print(f"answer1: {answer1} \n ============ \nhistory1: {history}")
@@ -155,7 +156,8 @@ if __name__ == "__main__":
     answer2 = llm.invoke(question2,
                          chat_history=history,
                          context=context2,
-                         prompt_template=prompt_template)
+                         prompt_template=prompt_template,
+                         stream=True)
 
     history = build_chat_history(history, question2, answer2)
     print(f"chat2: {answer2} \n ============ \nhistory2: {history}")
