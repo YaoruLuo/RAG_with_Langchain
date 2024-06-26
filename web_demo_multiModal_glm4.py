@@ -207,11 +207,9 @@ if __name__ == "__main__":
                               chat_history=history,
                               context=prompt_context,
                               prompt_template="RAG_CHATGLM_TEMPLATE",
-                              stream=True
                               )
 
         message_placeholder.markdown(response)
-
 
         history = build_chat_history(history, question, response)
 

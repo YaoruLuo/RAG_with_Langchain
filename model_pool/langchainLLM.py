@@ -61,6 +61,8 @@ class ChatGLM4_LLM(LLM):
             system_prompt = PROMPT_TEMPLATE_ZH_LC[prompt_template].format(context=context)
         elif prompt_template == "QUERY_TRANSFORM_TEMPLATE":
             system_prompt = PROMPT_TEMPLATE_ZH_LC[prompt_template]
+        elif prompt_template == "SIMPLE_CHAT":
+            system_prompt = ""
 
         if len(chat_history) == 0:
             messages = [
