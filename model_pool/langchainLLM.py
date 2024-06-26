@@ -114,6 +114,11 @@ def build_chat_history(history, question, answer, rag_img_path = None):
             {"role": "assistant", "content": answer, "rag_img_path": rag_img_path}
          ]
     )
+
+    if len(history) > 2:
+        history.pop(0)
+        history.pop(0)
+
     return history
 
 if __name__ == "__main__":
