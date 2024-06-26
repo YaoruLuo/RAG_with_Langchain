@@ -1,0 +1,89 @@
+Announcement 通知   Delivery release of SIMATIC Energy Manager V7.5   SIMATIC Energy Manager  V7.5 上市通知  
+
+Announcement 通知
+
+Delivery release of SIMATIC Energy Manager V7.5
+
+SIMATIC Energy Manager V7.5 上市通知
+
+2024年5月9日发布
+
+SIEMENSTo: FA Partners BD Distribution/Branch BD Discrete Industry BD Region & FA PSS
+
+CC: Mr. Westerholt, Joerg Mr. Hansen, Nicholas Dr. Deubler, Sebastian
+
+尊敬的同事及合作伙伴，
+
+Dear Colleagues and Partners,
+
+从2024年5月9日开始，新版本能源管理系统-SIMATIC Energy Manager V7.5 将可以订货。 From May 9, 2024, the new version of SIMATIC Energy Manager V7.5 will be available to be ordered.
+
+SIMATIC Energy Manager产品是用于全厂或企业集团级别的能源管理软件，通过简单的组态方式即可实现 工厂的能源（包括水，电，压缩空气等）数据可视化，以及专业的能源报表与能源消耗分析及预测等高级 功能。
+
+SIMATIC Energy Manager is an energy management software for a plant-wide or group-wide energy management system that visualizes plant energy (water, electricity, compressed air, etc.) in a simple configuration way, as well as advanced functions such as professional energy reporting, energy consumption analysis and forecasting.
+
+新版本Energy Manager V7.5新增诸如特性，如，新设计了“资产模型”来方便浏览各项信息；“目标驾驶舱” 用来定义能耗KPI目标及跟踪目标的完成情况；现代化风格的仪表板和能源图表与矩阵图以获得强大的能耗 数据分析能力；计算碳排放数据并交互到SiGREEN系统等。
+
+The new version of Energy Manager V7.5 adds new features such as a newly designed "Asset Model" for easy access to information；"Target Cockpit" for defining energy KPIs and tracking of target achievement； modern dashboard and energy charts and matrix for powerful energy data analysis, and the calculation and interaction of carbon emissions data into the SiGREEN system.
+
+| ‘| | | | | | = | ‘| | | | | | | | | | |
+
+SIEMENS
+
+主要订货信息如下：
+
+Ordering information:Product
+
+Name
+
+产品名称
+
+SIMATIC
+
+Energy
+
+Manager
+
+PRO
+
+V7.5
+
+如有任何疑问，请与产品经理-胡世川先生联系。
+
+联系电话:+86 18513169996，邮箱: shichuan.hu@siemens.com
+
+Any questions, please do not hesitate to contact the product manager Mr. Hu Shi Chuan.
+
+Mobile:+86 18513169996，E-mail: shichuan.hu@siemens.com
+
+SIEMENS
+
+西门子（中国）有限公司数字化工业集团工厂自动化事业部保留对本通知内容的最终解释权及修改更新的 权利。感谢您一直以来对西门子自动化业务的支持！
+
+SLC DI FA reserves the right of final interpretation on the content of this announcement and the right to make amendments and updates. Thank you for your great support to Siemens SIMATIC business!
+
+此致
+
+Sincerely yours,
+
+Nw
+
+Nicholas Hansen
+
+韩三丰
+
+Strategy & Product Management
+
+战略和产品管理部门
+
+Factory Automation
+
+工厂自动化部
+
+Digital Industry
+
+数字化工业集团
+
+Siemens Ltd., China
+
+西门子（中国）有限公司
