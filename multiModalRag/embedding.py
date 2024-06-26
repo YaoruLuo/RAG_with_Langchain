@@ -19,14 +19,14 @@ def load_text(token_fpath):
     texts = []
     text_summaries = []
 
-    text_path_list = glob.glob(os.path.join(token_fpath, 'chunck', '*.pkl'))
+    text_path_list = glob.glob(os.path.join(token_fpath, 'chunk', '*.pkl'))
 
     for text_path in text_path_list:
         with open(text_path, 'rb') as f_text:
             text = pickle.load(f_text)
             texts += text
 
-        with open(text_path.replace('chunck', 'summary'), 'rb') as f_summary:
+        with open(text_path.replace('chunk', 'summary'), 'rb') as f_summary:
             text_summary = pickle.load(f_summary)
             text_summaries += text_summary
     return texts, text_summaries
@@ -103,7 +103,7 @@ def build_multiModal_retriever(dataBase_url, embed_model_path, token_size="500to
     token_fpath = os.path.join(dataBase_url, 'token', token_size)
     texts, text_summaries = load_text(token_fpath)
 
-    imgText_fpath = os.path.join(dataBase_url, 'imgText')
+    imgText_fpath = os.path.join(dataBase_url, 'extract_img')
     img_base64_list, _, image_summaries = load_imgs(imgText_fpath)
 
     embed_model = HuggingFaceEmbeddings(model_name=embed_model_path)
@@ -153,11 +153,12 @@ if __name__ == "__main__":
     embed_model_path = '../model_pool/bge-m3'
     token_size = "500token"
 
-    test_multiModal_retriever = True
-    test_parentChunk_retriever = False
+    test_multiModal_retriever = False
+    test_parentChunk_retriever = True
 
     # question = "如何在step 7 basic中创建一个项目?"
-    question = "s7-1500有什么功能？"
+    # question = "s7-1500有什么功能？"
+    question = "SIMATIC Energy Manager V7.5上市时间？"
 
     if test_multiModal_retriever:
         retriever_multiModal = build_multiModal_retriever(dataBase_url, embed_model_path, token_size)

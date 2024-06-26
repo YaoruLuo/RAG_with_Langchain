@@ -9,7 +9,7 @@ Extract PDF, save figures and txt.
 """
 # Extract elements from PDF
 
-def extract_pdf_elements(path, fname, output_image_save_path):
+def extract_pdf_elements(file_path, img_save_path):
     """
     Extract images, tables, and chunk text from a PDF file.
     path: File path, which is used to dump images (.jpg)
@@ -18,7 +18,7 @@ def extract_pdf_elements(path, fname, output_image_save_path):
     return partition_pdf(
         url = None,
         strategy= "hi_res",
-        filename=path + fname,
+        filename=file_path,
         extract_images_in_pdf=True,
         extract_image_block_types=["Image", "Table"],
         infer_table_structure=True,
@@ -26,7 +26,7 @@ def extract_pdf_elements(path, fname, output_image_save_path):
         max_characters=4000,
         new_after_n_chars=3800,
         combine_text_under_n_chars=2000,
-        extract_image_block_output_dir=output_image_save_path,
+        extract_image_block_output_dir=img_save_path,
     )
 
 
@@ -49,29 +49,28 @@ def categorize_pdf_elements(raw_pdf_elements):
 
     return texts, tables, images
 
-def runPDFExtract(fdir, fname, writeText=False):
-    output_image_save_path = os.path.join(fdir, 'figures')
+def runPDFExtract(file_path, text_save_path, img_save_dir):
 
-    raw_pdf_elements = extract_pdf_elements(fdir, fname, output_image_save_path)
+    raw_pdf_elements = extract_pdf_elements(file_path, img_save_dir)
     print("raw_pdf_elements:", raw_pdf_elements)
     print("=" * 40)
 
     texts, tables, images = categorize_pdf_elements(raw_pdf_elements)
 
-    if writeText:
-        with open(os.path.join(fdir, fname.replace("pdf", "txt")), "w") as f:
-            for text in texts:
-                f.write(text)
+    with open(text_save_path, "w") as f:
+        for text in texts:
+            f.write(text)
 
     return texts, tables, images
 
 
 if __name__ == "__main__":
     # File path
-    fdir = "../data/1500"
-    fname = "SIMATIC S7-1200-1500编程指南.pdf"
+    file_path = "../data/source/siemens/SIMATIC Energy Manager V7.5上市通知.pdf"
+    text_save_path = "../data/rag/fullText/SIMATIC Energy Manager V7.5上市通知.txt"
+    img_save_dir = "../data/rag/extract_img/img/SIMATIC Energy Manager上市通知"
 
-    texts, tables, images = runPDFExtract(fdir, fname, writeText=False)
+    texts, tables, images = runPDFExtract(file_path, text_save_path, img_save_dir)
     print("texts:", texts)
     print("=" * 40)
     print("tables:", tables)

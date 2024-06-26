@@ -94,7 +94,7 @@ def save_to_json(image_urls, summary, filename):
 
     return json_data
 
-def runTextSummary(textPath, chunkSize, savePath):
+def runTextSummary(textPath, chunkSize, chunk_save_path, summary_save_pth):
     with open(textPath, "r") as f:
         texts = f.read()
 
@@ -102,18 +102,15 @@ def runTextSummary(textPath, chunkSize, savePath):
         chunk_size=chunkSize, chunk_overlap=chunkSize*0.1
     )
 
-    texts_token = text_splitter.split_text(texts)
-    print("texts_token:", texts_token)
+    texts_chunks = text_splitter.split_text(texts)
+    print("texts_chunks:", texts_chunks)
 
-    text_summaries = generate_text_summaries(texts_token)
+    text_summaries = generate_text_summaries(texts_chunks)
 
-    tokenSavePath = os.path.join(savePath, 'text.pkl')
-    summarySavePath = os.path.join(savePath, 'summary.pkl')
+    with open(chunk_save_path, 'wb') as f:
+        pickle.dump(texts_chunks, f)
 
-    with open(tokenSavePath, 'wb') as f:
-        pickle.dump(texts_token, f)
-
-    with open(summarySavePath, 'wb') as f:
+    with open(summary_save_pth, 'wb') as f:
         pickle.dump(text_summaries, f)
 
 def runImgSummary(imgPath, modelPath, prompt, imgBase64SavePath, imgURLSumSavePath):
@@ -133,19 +130,20 @@ def runImgSummary(imgPath, modelPath, prompt, imgBase64SavePath, imgURLSumSavePa
 
 if __name__ == "__main__":
     # Get text summaries
-    # text_path = '../data/1500/doc/SIMATIC S7-1200-1500编程指南.txt'
-    # chunk_size = 1000
-    # save_path = '../data/1500/doc/1000token'
+    # text_path = '../data/rag/fullText/SIMATIC Energy Manager V7.5上市通知.txt'
+    # chunk_size = 500
+    # chunk_save_path = '../data/rag/token/500token/chunk/SIMATIC Energy Manager V7.5上市通知.pkl'
+    # summary_save_pth = '../data/rag/token/500token/summary/SIMATIC Energy Manager V7.5上市通知.pkl'
     #
-    # runTextSummary(text_path, chunk_size, save_path)
+    # runTextSummary(text_path, chunk_size, chunk_save_path, summary_save_pth)
 
     # ==============================
     # Get image summaries
-    img_path = "../data/1500/figures"
+    img_path = "../data/rag/extract_img/img/SIMATIC Energy Manager上市通知"
     model_path = "../model_pool/MiniCPM-Llama3-V-2_5-int4"
     img_summary_prompt = """以西门子PLC为背景，详细总结图中的信息。"""
-    img_base64_save_path = '../data/1500/img_base64_list.pkl'
-    img_URL_sum_save_path = "../data/1500/path_summary.json"
+    img_base64_save_path = '../data/rag/extract_img/img_base64/SIMATIC Energy Manager V7.5上市通知.pkl'
+    img_URL_sum_save_path = "../data/rag/extract_img/path_summary/SIMATIC Energy Manager V7.5上市通知.json"
 
     runImgSummary(img_path,
                   model_path,

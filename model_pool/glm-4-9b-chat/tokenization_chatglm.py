@@ -78,7 +78,7 @@ class ChatGLM4Tokenizer(PreTrainedTokenizer):
             elif isinstance(t, bytes):
                 temp += t
             else:
-                raise TypeError("chunck should only be of type types or str")
+                raise TypeError("chunk should only be of type types or str")
         if temp:
             text += temp.decode("utf-8", errors="replace")
         return text
@@ -91,11 +91,11 @@ class ChatGLM4Tokenizer(PreTrainedTokenizer):
         return tokens
 
     def _convert_token_to_id(self, token):
-        """ Converts a chunck (str) in an id using the vocab. """
+        """ Converts a chunk (str) in an id using the vocab. """
         return self.mergeable_ranks[token]
 
     def _convert_id_to_token(self, index):
-        """Converts an index (integer) in a chunck (str) using the vocab."""
+        """Converts an index (integer) in a chunk (str) using the vocab."""
         return self.decoder.get(index, "")
 
     def save_vocabulary(self, save_directory, filename_prefix=None):
